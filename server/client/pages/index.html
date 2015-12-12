@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>Title</title>
+		<link rel="stylesheet" href="angular-material/angular-material.css">
+	</head>
+	<body>
+		<div ng-app="index" ng-controller="indexController" layout="column" layout-align="center center" layout-fill>
+			<md-input-container>
+				<label>Incobator</label>
+			 	<input ng-model="incubator">
+			</md-input-container>
+			<md-button class="md-primary" ng-click="connect()">Connect</md-button>
+		</div>
+		<script src="angular/angular.js"></script>
+		<script src="angular-material/angular-material.js"></script>
+		<script src="angular-messages/angular-messages.js"></script>
+		<script src="angular-aria/angular-aria.js"></script>
+		<script src="angular-animate/angular-animate.js"></script>
+		<script src="angular-resource/angular-resource.js"></script>
+		<script src="index.js"></script>
+	</body>
+</html>
