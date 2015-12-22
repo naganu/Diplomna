@@ -5,11 +5,19 @@
 	</head>
 	<body>
 		<div ng-app="index" ng-controller="indexController" layout="column" layout-align="center center" layout-fill>
-			<md-input-container>
-				<label>Incobator</label>
-			 	<input ng-model="incubator">
-			</md-input-container>
-			<md-button class="md-primary" ng-click="connect()">Connect</md-button>
+			<div ng-hide="host" layout="column" layout-align="center center" layout-fill>
+				<md-input-container>
+					<label>Incobator</label>
+				 	<input ng-model="incubator">
+				</md-input-container>
+				<md-button class="md-primary" ng-click="connect()">Connect</md-button>
+				<md-button class="md-warn" ng-click="list()">List</md-button>
+			</div>
+			<div ng-show="host" layout="row">
+				<p>Enter: </p>
+				<p>{{host}}</p>
+				<p>in your browser</p>
+			</div>
 		</div>
 		<script src="angular/angular.js"></script>
 		<script src="angular-material/angular-material.js"></script>

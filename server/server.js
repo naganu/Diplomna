@@ -11,6 +11,7 @@ var connected = {};
 server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, './node_modules')));
 server.use(express.static(clientDir));
+server.get('/dev/list', dev_list);
 server.get('/connect/:incubator', connect);
 server.post('/connect', incubator);
 server.use(index);
@@ -24,6 +25,10 @@ function connect(request, response) {
 function incubator(request, response) {
 	connected[request.body.incubator] = request.body.host;
 	response.status(200);
+}
+
+function dev_list(request, response) {
+	response.send(connected);
 }
 
 function index(request, response) {
