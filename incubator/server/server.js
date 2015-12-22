@@ -6,14 +6,14 @@ var http = require('http');
 var server = express();
 var port = 3000;
 var routes = require('./routes/router');
-var clientDir = path.join(__dirname, './client');
+var clientDir = path.join(__dirname, './../client');
 var indexPage = path.join(clientDir, 'pages/index.html');
 var errorPage = path.join(clientDir, 'pages/error.html');
 
 server.use(bodyParser.json());
-server.use(express.static(path.join(__dirname, './node_modules')));
+server.use(express.static(path.join(__dirname, './../node_modules')));
 server.use(express.static(clientDir));
-server.use(router);
+server.use(routes);
 server.use(index);
 server.listen(port);
 connect();
@@ -26,12 +26,12 @@ function index(request, response) {
 }
 
 function connect() {
-	var ip = ip.address();
-	var data = {incubator: "asdfg", host: `#{ip}:3000`};
+	var myIp = ip.address();
+	var data = {incubator: "asdfg", host: `${myIp}:${port}`};
 	var postData = JSON.stringify(data);
 
 	var options = {
-		hostname: "",
+		hostname: "192.168.0.102",
 		port: 3000,
 		path: "/connect",
 		method: "POST",
@@ -42,7 +42,7 @@ function connect() {
 	}
 
 	var request = http.request(options, handle);
-	request.writeData(postData);
+	request.write(postData);
 	request.end();
 
 	function handle(response) {

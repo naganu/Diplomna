@@ -7,7 +7,7 @@ function controller($resource) {
 	incubator.led = led;
 
 	function led() {
-		$resource('/led').save({}, {value: incubator.value}, callback);
-		function callback(response) {});
+		$resource('/led').save({}, {}, callback);
+		function callback(response) {};
 	}
 }
