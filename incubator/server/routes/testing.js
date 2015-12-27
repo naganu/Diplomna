@@ -7,11 +7,10 @@ var state = 0;
 wpi.wiringPiSetup();
 wpi.pinMode(pin, wpi.OUTPUT);
 
-router.post("/led", led);
+router.post("/ext_vent", led);
 
-function led(request, response) {
-	state = !state;
-	if(state)
+function ext_vent(request, response) {
+	if(request.body.state)
 		wpi.digitalWrite(pin, wpi.HIGH);
 	else
 		wpi.digitalWrite(pin, wpi.LOW);

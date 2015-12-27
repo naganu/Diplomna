@@ -8,9 +8,9 @@ function controller($resource) {
 	incubator.value = false;
 	incubator.led = led;
 
-	function led() {
+	function ext_vent() {
 		incubator.value = !incubator.value;
-		$resource('/led').save({}, {}, callback);
+		$resource('/ext_vent').save({}, {state: incubator.value}, callback);
 		function callback(response) {};
 	}
 }

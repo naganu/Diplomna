@@ -4,9 +4,10 @@
 		<link rel="stylesheet" href="angular-material/angular-material.css">
 	</head>
 	<body>
-		<div ng-app="incubator" ng-controller="incubatorController as incubator" >
-			<div layout="column" layout-align="center center">
-				<md-button ng-class="incubator.value ? 'md-primary' : 'md-warn'" class="md-raised" ng-click="incubator.led()">
+		<div ng-app="incubator" ng-controller="incubatorController as incubator" layout="column">
+			<div layout="row" layout-align="center center">
+				<span>External ventilator</span>
+				<md-button ng-class="incubator.value ? 'md-primary' : 'md-warn'" class="md-raised" ng-click="incubator.ext_vent()">
 					{{incubator.value ? 'on' : 'off'}}
 				</md-button>
 			</div>
