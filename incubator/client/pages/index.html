@@ -4,8 +4,12 @@
 		<link rel="stylesheet" href="angular-material/angular-material.css">
 	</head>
 	<body>
-		<div ng-app="incubator" ng-controller="incubatorController as incubator" layout="column" layout-align="center center" layout-fill>
-			<md-switch ng-model="incubator.value" class="md-primary" ng-click="incubator.led()"></md-switch>
+		<div ng-app="incubator" ng-controller="incubatorController as incubator" >
+			<div layout="column" layout-align="center center">
+				<md-button ng-class="incubator.value ? 'md-primary' : 'md-warn'" class="md-raised" ng-click="incubator.led()">
+					{{incubator.value ? 'on' : 'off'}}
+				</md-button>
+			</div>
 		</div>
 		<script src="angular/angular.js"></script>
 		<script src="angular-material/angular-material.js"></script>

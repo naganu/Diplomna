@@ -31,7 +31,7 @@ function connect() {
 	var postData = JSON.stringify(data);
 
 	var options = {
-		hostname: "192.168.0.102",
+		hostname: "192.168.0.104",
 		port: 3000,
 		path: "/connect",
 		method: "POST",
