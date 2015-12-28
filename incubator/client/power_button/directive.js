@@ -12,7 +12,7 @@
 			controllerAs: "buttonOnOff",
 			bindToController: {
 				url: "@"
-			}	
+			}
+		}	
 	}
-
 })()

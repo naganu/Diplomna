@@ -1,5 +1,5 @@
 angular.module('incubator', ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource'])
-	.controller('incubatorController', controller);
+	.controller('incubatorController', controller)
 	.config(config);
 
 function controller($resource) {

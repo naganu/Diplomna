@@ -8,13 +8,12 @@
 		var buttonOnOff = this;
 		buttonOnOff.$inject = ['$resource'];
 		buttonOnOff.value = false;
-		buttonOnOff.switch = switch;
+		buttonOnOff.press = press;
 
-		function switch() {
+		function press() {
 			buttonOnOff.value = !buttonOnOff.value;
 			$resource(buttonOnOff.url).save({}, {state: buttonOnOff.value}, callback);
 			function callback(response) {};
 		}
 	}
-
 })()

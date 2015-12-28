@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 var wpi = require('wiring-pi');
 
-wpi.wiringPiSetup();
-
 var tests = [
 	{
 		pin: 1,
@@ -12,7 +10,7 @@ var tests = [
 	{
 		pin: 2,
 		url: '/int_vent' 
-	}/*,
+	},
 	{
 		pin: 3,
 		url: '/heater'
@@ -32,12 +30,14 @@ var tests = [
 	{
 		pin: 28,
 		url: '/buzzer'
-	}*/
+	}
 ];
 
-for(var t in tests) {
+wpi.wiringPiSetup();
+
+for(var i = 0;i < tests.length; ++i) {
 	wpi.pinMode(t.pin, wpi.OUTPUT);
-	router.post(t.url, test(t.pin));
+	router.post(tests[i].url, test(tests[i].pin));
 }
 
 
@@ -47,7 +47,7 @@ function test(pin) {
 			wpi.digitalWrite(pin, wpi.HIGH);
 		else
 			wpi.digitalWrite(pin, wpi.LOW);
-		response.send({});
+		response.send({state: request.body.state});
 	}
 }
 
