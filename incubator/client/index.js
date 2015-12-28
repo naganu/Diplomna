@@ -4,6 +4,8 @@ angular.module('incubator', ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 
 
 function controller($resource) {
 	var incubator = this;
+	incubator.$inject = ['$resource'];
+
 	incubator.buttons = [
 		{
 			message: 'External ventilator',
@@ -34,6 +36,18 @@ function controller($resource) {
 			url: '/buzzer' 
 		}
 	];
+
+	incubator.hall = {
+		message: 'Hall sensor',
+		url: '/hall',
+		value: false 
+	}
+
+	setInterval(function() {
+		$resource(incubator.hall.url).save({}, {}, function (response) {
+			incubator.hall.value = response.state;
+		});
+	}, 200);
 }
 
 function config($mdThemingProvider) {
@@ -41,3 +55,8 @@ function config($mdThemingProvider) {
 	$mdThemingProvider.theme('default')
     .primaryPalette('green')
 }
+
+angular.element(document)
+.ready(function() {
+	angular.bootstrap(document, ['incubator']);
+});

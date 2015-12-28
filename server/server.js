@@ -24,7 +24,7 @@ function connect(request, response) {
 
 function incubator(request, response) {
 	connected[request.body.incubator] = request.body.host;
-	response.status(200);
+	response.send({success: true});
 }
 
 function dev_list(request, response) {
