@@ -5,11 +5,9 @@
 	</head>
 	<body>
 		<div ng-app="incubator" ng-controller="incubatorController as incubator" layout="column">
-			<div layout="row" layout-align="center center">
-				<span>External ventilator</span>
-				<md-button ng-class="incubator.value ? 'md-primary' : 'md-warn'" class="md-raised" ng-click="incubator.ext_vent()">
-					{{incubator.value ? 'on' : 'off'}}
-				</md-button>
+			<div ng-repeat="button in incubator.buttons" layout="row" layout-align="center center">
+				<span>{{button.message}}</span>
+				<power-button url="{{button.url}}"></power-button>
 			</div>
 		</div>
 		<script src="angular/angular.js"></script>
@@ -19,5 +17,7 @@
 		<script src="angular-animate/angular-animate.js"></script>
 		<script src="angular-resource/angular-resource.js"></script>
 		<script src="index.js"></script>
+		<script src="power_button/controller.js"></script>
+		<script src="power_button/directive.js"></script>
 	</body>
 </html>

@@ -4,15 +4,36 @@ angular.module('incubator', ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 
 
 function controller($resource) {
 	var incubator = this;
-	incubator.$inject = ['$resource'];
-	incubator.value = false;
-	incubator.led = led;
-
-	function ext_vent() {
-		incubator.value = !incubator.value;
-		$resource('/ext_vent').save({}, {state: incubator.value}, callback);
-		function callback(response) {};
-	}
+	incubator.buttons = [
+		{
+			message: 'External ventilator',
+			url: '/ext_vent' 
+		},
+		{
+			message: 'Internall ventilator',
+			url: '/int_vent' 
+		},
+		{
+			message: 'Heater',
+			url: '/heater' 
+		},
+		{
+			message: 'Led light',
+			url: '/led_light' 
+		},
+		{
+			message: 'Motor - rotation',
+			url: '/mot_rot' 
+		},
+		{
+			message: 'Peristaltic pump',
+			url: '/per_pump' 
+		},
+		{
+			message: 'Buzzer',
+			url: '/buzzer' 
+		}
+	];
 }
 
 function config($mdThemingProvider) {
