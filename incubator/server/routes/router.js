@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var led = require('./led');
+var testing = require('./testing');
 
-router.use(led);
+router.use(testing);
 
 module.exports = router;

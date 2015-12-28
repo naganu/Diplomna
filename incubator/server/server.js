@@ -16,7 +16,7 @@ server.use(express.static(clientDir));
 server.use(routes);
 server.use(index);
 server.listen(port);
-connect();
+//connect();
 
 function index(request, response) {
 	if(request.url === '/' && request.method === 'GET')
