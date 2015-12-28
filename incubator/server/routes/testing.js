@@ -50,8 +50,9 @@ for(var i = 0;i < inputs.length; ++i)
 
 function input(pin) {
 	wpi.pinMode(pin, wpi.INPUT);
+	wpi.pullUpDnControl(pin, wpi.PUD_UP);
 	return function(request, response) {
-		res.send{state: wpi.digitalRead(pin)};
+		response.send({state: wpi.digitalRead(pin)});
 	}
 }
 
