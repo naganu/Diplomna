@@ -4,12 +4,17 @@
 		<link rel="stylesheet" href="angular-material/angular-material.css">
 	</head>
 	<body>
-		<div ng-app="incubator" ng-controller="incubatorController as incubator" layout="column">
-			<div ng-repeat="button in incubator.buttons" layout="row" layout-align="center center">
-				<span>{{button.message}}</span>
-				<power-button url="{{button.url}}"></power-button>
+		<div ng-app="incubator" ng-controller="incubatorController as incubator" layout="column" layout-align="center center">
+			<div flex="auto" lyaout="column" layout-align="center stretch">
+				<div ng-repeat="button in incubator.buttons" layout="row" layout-align="center center" flex="auto">
+					<span flex="70">{{button.message}}</span>
+					<span flex="30">
+						<power-button url="{{button.url}}"></power-button>
+					</span>
+				</div>
 			</div>
 		</div>
+
 		<script src="angular/angular.js"></script>
 		<script src="angular-material/angular-material.js"></script>
 		<script src="angular-messages/angular-messages.js"></script>

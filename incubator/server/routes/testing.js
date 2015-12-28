@@ -36,7 +36,7 @@ var tests = [
 wpi.wiringPiSetup();
 
 for(var i = 0;i < tests.length; ++i) {
-	wpi.pinMode(t.pin, wpi.OUTPUT);
+	wpi.pinMode(tests[i].pin, wpi.OUTPUT);
 	router.post(tests[i].url, test(tests[i].pin));
 }
 
