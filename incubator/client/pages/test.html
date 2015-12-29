@@ -1,0 +1,24 @@
+		<div class="scroll">
+			<div id="header" class="md-display-1 header" layout="column" layout-align="center center" >
+				Test
+			</div>
+			<div class="md-title" ng-controller="incubatorController as incubator" layout="column" layout-align="center center">
+				<div flex="auto" lyaout="column" layout-align="center stretch">
+					<div ng-repeat="button in incubator.buttons" layout="row" layout-align="center center" flex="auto" 
+					layout-gt-xs-padding>
+						<span flex-xs="50" flex="70">{{button.message}}</span>
+						<span flex-xs="20" flex="30">
+							<power-button url="{{button.url}}"></power-button>
+						</span>
+					</div>
+					<div layout="row" layout-align="center center" flex="auto" layout-gt-xs-padding>
+						<span  flex-xs="50" flex="70">{{incubator.hall.message}}</span>
+						<span  flex-xs="20" flex="30">
+							<md-button ng-class="hall.value ? 'md-primary' : 'md-warn'" class="md-raised">
+								{{incubator.hall.value ? 'high' : 'low'}}
+							</md-button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>

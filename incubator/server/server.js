@@ -5,7 +5,7 @@ var ip = require('ip');
 var http = require('http');
 var server = express();
 var port = 3000;
-var routes = require('./routes/router');
+//var routes = require('./routes/router');
 var clientDir = path.join(__dirname, './../client');
 var indexPage = path.join(clientDir, 'pages/index.html');
 var errorPage = path.join(clientDir, 'pages/error.html');
@@ -13,7 +13,7 @@ var errorPage = path.join(clientDir, 'pages/error.html');
 server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, './../node_modules')));
 server.use(express.static(clientDir));
-server.use(routes);
+//server.use(routes);
 server.use(index);
 server.listen(port);
 //connect();
@@ -31,7 +31,7 @@ function connect() {
 	var postData = JSON.stringify(data);
 
 	var options = {
-		hostname: "192.168.0.103",
+		hostname: "192.168.0.105",
 		port: 3000,
 		path: "/connect",
 		method: "POST",

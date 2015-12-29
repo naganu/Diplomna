@@ -1,62 +1,30 @@
-angular.module('incubator', ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource'])
-	.controller('incubatorController', controller)
+(function () {
+	'use strict';
+
+	angular.module('incubator', ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource', 'ngRoute'])
 	.config(config);
 
-function controller($resource) {
-	var incubator = this;
-	incubator.$inject = ['$resource'];
+	function config($mdThemingProvider, $routeProvider) {
+		//this.$inject = ['$mdThemingProvider', '$routeProvider'];
+		$mdThemingProvider.theme('default')
+	    .primaryPalette('green');
 
-	incubator.buttons = [
-		{
-			message: 'External ventilator',
-			url: '/ext_vent' 
-		},
-		{
-			message: 'Internall ventilator',
-			url: '/int_vent' 
-		},
-		{
-			message: 'Heater',
-			url: '/heater' 
-		},
-		{
-			message: 'Led light',
-			url: '/led_light' 
-		},
-		{
-			message: 'Motor - rotation',
-			url: '/mot_rot' 
-		},
-		{
-			message: 'Peristaltic pump',
-			url: '/per_pump' 
-		},
-		{
-			message: 'Buzzer',
-			url: '/buzzer' 
-		}
-	];
-
-	incubator.hall = {
-		message: 'Hall sensor',
-		url: '/hall',
-		value: false 
+	    $routeProvider
+	    .when('/test', {
+	    	templateUrl: 'pages/test.html',
+	    	controller: 'incubatorController',
+	    	controllerAs: 'incubator'
+	    }).when('/settings', {
+	    	templateUrl: 'pages/settings.html',
+	    	controller: 'incubatorController',
+	    	controllerAs: 'incubator'
+	    });
 	}
 
-	setInterval(function() {
-		$resource(incubator.hall.url).save({}, {}, function (response) {
-			incubator.hall.value = response.state;
-		});
-	}, 200);
-}
+	config.$inject = ['$mdThemingProvider', '$routeProvider'];
 
-function config($mdThemingProvider) {
-	this.$inject = ['$mdThemingProvider'];
-	$mdThemingProvider.theme('default')
-    .primaryPalette('green')
-}
-
-angular.element(document)
-.ready(function() {
-	angular.bootstrap(document, ['incubator']);
-});
+	angular.element(document)
+	.ready(function() {
+		angular.bootstrap(document, ['incubator']);
+	});
+})()
