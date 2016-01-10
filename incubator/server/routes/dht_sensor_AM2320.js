@@ -8,39 +8,46 @@ class Sensor {
 
     constructor() {
     	this.addr = 0xB8 >> 1;
-    	this.read = 0x03;
-    	this.register = 0x0B;
-    	this.count = 4;
-        this.buffer = new Array(6);
-        this.i2c = wpi.wiringPiI2CSetup(this.addr);	
+    	this.data = [0x03, 0x00, 0x04]
+        this.count = 4;
+        this.buffer = new Array(8);
     }
 
-    read8() {
-    	return wpi.wiringPiI2CReadReg8(this.i2c, this.addr);
+    openI2C() {
+        this.i2c = wpi.wiringPiI2CSetup(this.addr); 
     }
 
-     write(data) {
-    	wpi.wiringPiI2CWriteReg8(this.i2c, this.addr, data);
+    closeI2C() {
+        fs.closeSync(this.i2c);
+    }
+
+    readI2C() {
+    	return wpi.wiringPiI2CRead(this.i2c);
+    }
+
+     writeI2C(data) {
+    	wpi.wiringPiI2CWrite(this.i2c, data);
     }
 
     readRaw() {
     	//return new Promise(function(resolve, reject) {
-    	this.write(this.read);
-    	this.write(this.register);
-    	this.write(this.count);
+        this.openI2C();
+        this.closeI2C();
+        this.openI2C();
+        for(var i = 0;i < 3;++i)
+               this.writeI2C(this.data[i]);
     	//setTimeout(function () {
         wpi.delay(2000);
-	for(var i = 0; i < 2 + this.count; ++i)
-		this.buffer[i] = this.read8();
+    	for(var i = 0; i < this.count + 2; ++i)
+    		this.buffer[i] = this.readI2C();
 
-	var crc = 0;
-	crc = this.read8();
-	crc |= this.read8() << 8;
-	console.log(crc);
-			
-        var crc16 = this.crc16();
-	return crc == crc16;
-        //});
+    	var crc = 0;
+    	crc = this.readI2C();
+    	crc |= this.readI2C() << 8;
+    	console.log(crc);
+        this.closeI2C();
+    	return crc == this.crc16();
+            //});
     }
 
     crc16() {
@@ -69,10 +76,8 @@ class Sensor {
     		humi: 0
     	};
 
-    	read.humi = this.buffer[2] << 8;
-    	read.humi = this.buffer[3];
-    	read.temp = this.buffer[4] << 8;
-    	read.temp = this.buffer[5];
+    	read.humi = (this.buffer[2] << 8) + this.buffer[3];
+    	read.temp = (this.buffer[4] << 8) + this.buffer[5];
 
     			//resolve(read);
     		//}
