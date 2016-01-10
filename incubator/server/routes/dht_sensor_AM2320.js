@@ -4,6 +4,7 @@
 // Copyright (c) 2013 Wang Dong
 'use strict';
 var wpi = require("wiring-pi");
+var fs = require("fs");
 class Sensor {
 
     constructor() {
