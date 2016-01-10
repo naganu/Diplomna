@@ -3,8 +3,7 @@
 //
 // Copyright (c) 2013 Wang Dong
 'use strict';
-//var wpi = require("wiring-pi");
-var wpi = {}
+var wpi = require("wiring-pi");
 class Sensor {
 
     constructor() {
@@ -13,10 +12,10 @@ class Sensor {
     	this.register = 0x0B;
     	this.count = 4;
         this.buffer = new Array(6);
-        this.i2c = wpi.wiringPiI2CSetup(1);	
+        this.i2c = wpi.wiringPiI2CSetup(this.addr);	
     }
 
-    read() {
+    read8() {
     	return wpi.wiringPiI2CReadReg8(this.i2c, this.addr);
     }
 
@@ -27,25 +26,20 @@ class Sensor {
     readRaw() {
     	//return new Promise(function(resolve, reject) {
     	this.write(this.read);
-        console.log(read);
     	this.write(this.register);
     	this.write(this.count);
     	//setTimeout(function () {
         wpi.delay(2000);
-	    for(var i = 0; i < 2 + this.count; ++i)
-	    	this.buffer[i] = this.read();
+	for(var i = 0; i < 2 + this.count; ++i)
+		this.buffer[i] = this.read8();
 
-		var crc = 0;
-		crc = this.read();
-		crc |= this.read() << 8;
+	var crc = 0;
+	crc = this.read8();
+	crc |= this.read8() << 8;
+	console.log(crc);
 			
         var crc16 = this.crc16();
-		if(crc == crc16)
-		    resolve();
-		 else {
-    		console.lo(crc, crc16);
-    		reject();
-        }
+	return crc == crc16;
         //});
     }
 
@@ -68,32 +62,33 @@ class Sensor {
 
     readData() {
     	//return new Promise(function(resolve, reject) {
-    		function data() {
-    			var read = {
-    				temp: 0,
-    				humi: 0
-    			}
+    		//function data() {
+	console.log(this.readRaw());
+    	var read = {
+    		temp: 0,
+    		humi: 0
+    	};
 
-    			read.humi = this.buffer[2] << 8;
-    			read.humi = this.buffer[3];
-    			read.temp = this.buffer[4] << 8;
-    			read.temp = this.buffer[5];
+    	read.humi = this.buffer[2] << 8;
+    	read.humi = this.buffer[3];
+    	read.temp = this.buffer[4] << 8;
+    	read.temp = this.buffer[5];
 
-    			resolve(read);
-    		}
-    		this.readRaw().then(data, reject);
+    			//resolve(read);
+    		//}
+    	return read;
     	//});
     }
 };
 
 var sensor = new Sensor();
 
-function resolve(res) {
+/*function resolve(res) {
 	console.log(res);
 }
 
 function reject() {
 	console.log("error");
 }
-
-sensor.readData().then(resolve, reject);
+*/
+console.log(sensor.readData(3));
