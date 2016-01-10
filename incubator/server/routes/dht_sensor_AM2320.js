@@ -2,7 +2,7 @@
 // The MIT License (MIT)
 //
 // Copyright (c) 2013 Wang Dong
-
+'use strict';
 var wpi = require("wiring-pi");
 
 class Sensor {
@@ -36,10 +36,14 @@ class Sensor {
 		    	var crc = 0;
 		    	crc = this.read();
 		    	crc |= this.read() << 8;
-
-		    	if(crc == this.crc16())
+			
+			var crc16 = this.crc16();
+		    	if(crc == crc16)
 		    		resolve();
-		    	else reject();
+		    	else {
+				console.lo(crc, crc16);
+				reject();
+			}
 		    }, 	1600);
     	});
     }
@@ -65,8 +69,8 @@ class Sensor {
     	return new Promise(function(resolve, reject) {
     		function data() {
     			var read = {
-    				temp: 0;
-    				humi: 0;
+    				temp: 0,
+    				humi: 0
     			}
 
     			read.humi = this.buffer[2] << 8;
@@ -81,14 +85,14 @@ class Sensor {
     }
 };
 
-sensor = new Sensor();
+var sensor = new Sensor();
 
 function resolve(res) {
 	console.log(res);
 }
 
 function reject() {
-	console.log("errror");
+	console.log("error");
 }
 
 sensor.readData().then(resolve, reject);
