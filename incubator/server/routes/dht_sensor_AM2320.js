@@ -3,8 +3,8 @@
 //
 // Copyright (c) 2013 Wang Dong
 'use strict';
-var wpi = require("wiring-pi");
-
+//var wpi = require("wiring-pi");
+var wpi = {}
 class Sensor {
 
     constructor() {
@@ -25,27 +25,28 @@ class Sensor {
     }
 
     readRaw() {
-    	return new Promise(function(resolve, reject) {
-    		this.write(this.read);
-	    	this.write(this.register);
-	    	this.write(this.count);
-	    	setTimeout(function () {
-		    	for(var i = 0; i < 2 + this.count; ++i)
-		    			this.buffer[i] = this.read();
+    	//return new Promise(function(resolve, reject) {
+    	this.write(this.read);
+        console.log(read);
+    	this.write(this.register);
+    	this.write(this.count);
+    	//setTimeout(function () {
+        wpi.delay(2000);
+	    for(var i = 0; i < 2 + this.count; ++i)
+	    	this.buffer[i] = this.read();
 
-		    	var crc = 0;
-		    	crc = this.read();
-		    	crc |= this.read() << 8;
+		var crc = 0;
+		crc = this.read();
+		crc |= this.read() << 8;
 			
-			var crc16 = this.crc16();
-		    	if(crc == crc16)
-		    		resolve();
-		    	else {
-				console.lo(crc, crc16);
-				reject();
-			}
-		    }, 	1600);
-    	});
+        var crc16 = this.crc16();
+		if(crc == crc16)
+		    resolve();
+		 else {
+    		console.lo(crc, crc16);
+    		reject();
+        }
+        //});
     }
 
     crc16() {
@@ -66,7 +67,7 @@ class Sensor {
     }
 
     readData() {
-    	return new Promise(function(resolve, reject) {
+    	//return new Promise(function(resolve, reject) {
     		function data() {
     			var read = {
     				temp: 0,
@@ -81,7 +82,7 @@ class Sensor {
     			resolve(read);
     		}
     		this.readRaw().then(data, reject);
-    	});
+    	//});
     }
 };
 
