@@ -7,6 +7,8 @@
 	function config($mdThemingProvider, $routeProvider) {
 		//this.$inject = ['$mdThemingProvider', '$routeProvider'];
 		$mdThemingProvider.theme('default')
+	    .primaryPalette('blue');
+		$mdThemingProvider.theme('on_off')
 	    .primaryPalette('green');
 
 	    $routeProvider

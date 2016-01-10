@@ -42,11 +42,19 @@ var inputs = [
 
 wpi.wiringPiSetup();
 
+function output(pin) {
+	wpi.pinMode(pin, wpi.OUTPUT);
+	return function (request, response) {
+		if(request.body.state)
+			wpi.digitalWrite(pin, wpi.HIGH);
+		else
+			wpi.digitalWrite(pin, wpi.LOW);
+		response.send(request.body);
+	}
+}
+
 for(var i = 0;i < outputs.length; ++i) 
 	router.post(outputs[i].url, output(outputs[i].pin));
-
-for(var i = 0;i < inputs.length; ++i)
-	router.post(inputs[i].url, input(inputs[i].pin));
 
 function input(pin) {
 	wpi.pinMode(pin, wpi.INPUT);
@@ -56,15 +64,7 @@ function input(pin) {
 	}
 }
 
-function output(pin) {
-	wpi.pinMode(pin, wpi.OUTPUT);
-	return function (request, response) {
-		if(request.body.state)
-			wpi.digitalWrite(pin, wpi.HIGH);
-		else
-			wpi.digitalWrite(pin, wpi.LOW);
-		response.send({state: request.body.state});
-	}
-}
+for(var i = 0;i < inputs.length; ++i)
+	router.post(inputs[i].url, input(inputs[i].pin));
 
 module.exports = router;

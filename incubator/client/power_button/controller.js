@@ -13,7 +13,11 @@
 		function press() {
 			buttonOnOff.value = !buttonOnOff.value;
 			$resource(buttonOnOff.url).save({}, {state: buttonOnOff.value}, callback);
-			function callback(response) {};
+			function callback(response) {
+				buttonOnOff.value = response.value;
+			};
 		}
+
+		
 	}
 })()
