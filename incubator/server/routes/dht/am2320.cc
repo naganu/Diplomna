@@ -1,6 +1,10 @@
 //Copyright (c) 2014 Masayuki Takagi (kamonama@gmail.com)
 //Licensed under the LGPL License.
 
+#include <wiringPi.h>
+#include <unistd.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>              /* for O_RDWR */
@@ -28,22 +32,11 @@ using v8::String;
 
 
 /*
- *  udelay function
+ * Removed udelay function
  */
 
-long timeval_to_usec( struct timeval tm ) {
-  return tm.tv_sec * 1000000 + tm.tv_usec;
-}
 
-void udelay( long us ) {
-  struct timeval current;
-  struct timeval start;
-  
-  gettimeofday( &start, NULL );
-  do {
-    gettimeofday( &current, NULL );
-  } while( timeval_to_usec( current ) - timeval_to_usec( start ) < us );
-}
+int sys_set = wiringPiSetup();
 
 
 /*
@@ -169,7 +162,7 @@ st_am2321 am2321() {
   ret = write( fd, data, 3 );
   if ( ret < 0 && retry_cnt++ < 5 ) {
     fprintf( stderr, "am2321: retry\n" );
-    udelay( 1000 );
+    delayMicroseconds( 1000 );
     goto retry;
   }
   if ( ret < 0 ) {
@@ -178,7 +171,7 @@ st_am2321 am2321() {
   }
   
   /* wait for having measured */
-  udelay( 1500 );
+  delayMicroseconds( 1500 );
   
   /* read measured result */
   memset( data, 0x00, 8 );
