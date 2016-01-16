@@ -6,6 +6,15 @@
 #include <fcntl.h>              /* for O_RDWR */
 #include <string.h>             /* for memcpy */
 #include <linux/i2c-dev.h>      /* for I2C_SLAVE */
+#include <node.h>
+
+using v8::FunctionCallbackInfo;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::Integer;
+using v8::Value;
+using v8::String;
 
 /* I2C character device */
 #define I2C_DEVICE "/dev/i2c-1" //Rasberry Pi model 2 B (0 -> 1)
@@ -209,7 +218,24 @@ void print_am2321( st_am2321 measured ) {
 
  //Removed all option related code -> no need of them
 
-int main() {
-  print_am2321(am2321());
-  return 0;
+
+ void AM2320Object(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+
+    Local<Object> obj = Object::New(isolate);
+
+    st_am2321 measured = am2321();
+
+    obj->Set(String::NewFromUtf8(isolate, "tempInt"), Integer::New(args.GetIsolate(), am2321_temperature_integral(measured)));
+    obj->Set(String::NewFromUtf8(isolate, "tempFrac"), Integer::New(args.GetIsolate(), am2321_temperature_fraction(measured)));
+    obj->Set(String::NewFromUtf8(isolate, "humiInt"), Integer::New(args.GetIsolate(), am2321_humidity_integral(measured)));
+    obj->Set(String::NewFromUtf8(isolate, "humiFrac"), Integer::New(args.GetIsolate(), am2321_humidity_fraction(measured)));
+
+    args.GetReturnValue().Set(obj);
+ }
+
+void Init(Local<Object> exports, Local<Object> module) {
+  NODE_SET_METHOD(module, "exports", AM2320Object);
 }
+
+NODE_MODULE(am2320, Init)
