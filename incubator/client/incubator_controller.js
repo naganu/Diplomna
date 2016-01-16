@@ -9,12 +9,12 @@ function controller($resource) {
 
 	incubator.buttons = [
 		{
-			message: 'External ventilator',
-			url: '/ext_vent' 
+			message: 'Internal ventilator',
+			url: '/int_vent' 
 		},
 		{
-			message: 'Internall ventilator',
-			url: '/int_vent' 
+			message: 'External ventilator',
+			url: '/ext_vent' 
 		},
 		{
 			message: 'Heater',

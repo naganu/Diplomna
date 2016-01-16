@@ -7,6 +7,7 @@
 		var navigate = this;
 		navigate.$inject = ['$scope'];
 		navigate.paths = ['/test', '/settings'];
+		navigate.sensor = {temp: "temp", humi: "humi"};
 
 		$scope.$on('$routeChangeSuccess', function(event, current, previus) {
 			if(current)

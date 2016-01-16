@@ -20,7 +20,11 @@
 	    	templateUrl: 'pages/settings.html',
 	    	controller: 'incubatorController',
 	    	controllerAs: 'incubator'
-	    });
+	    }).when('/dht', {
+	    	templateUrl: 'pages/dht.html',
+	    	controller: 'dhtController',
+	    	controllerAs: 'dht'
+	    }).otherwise('/dht');
 	}
 
 	config.$inject = ['$mdThemingProvider', '$routeProvider'];

@@ -5,14 +5,15 @@
 		<link rel="stylesheet" href="angular-material/angular-material.css">
 		<link rel="stylesheet" href="pages/style.css">
 	</head>
-	<body layout="column" layout-align="center center">
-		
-		<div ng-controller="navigationController as navigate">
-			<md-button ng-class="navigate.button === 0 ? 'md-raised' : ''" class="md-primary" href="#/">Home</md-button>
-			<md-button ng-class="navigate.button === 1 ? 'md-raised' : ''" class="md-primary" href="#/test">Test</md-button>
-			<md-button ng-class="navigate.button === 2 ? 'md-raised' : ''" class="md-primary" href="#/settings">Settings</md-button>
-  			<div md-theme="on_off" ng-view></div>
-  		</div>
+	<body>
+		<div layout="column" layout-align="center center" layout-wrap>
+			<div ng-controller="navigationController as navigate">
+				<md-button ng-class="navigate.button === 0 ? 'md-raised' : ''" class="md-primary" href="#/dht">Home</md-button>
+				<md-button ng-class="navigate.button === 1 ? 'md-raised' : ''" class="md-primary" href="#/test">Test</md-button>
+				<md-button ng-class="navigate.button === 2 ? 'md-raised' : ''" class="md-primary" href="#/settings">Settings</md-button>
+	  			<div ng-view></div>
+	  		</div>
+	  	</div>
 
 		<script src="angular/angular.js"></script>
 		<script src="angular-material/angular-material.js"></script>
@@ -24,6 +25,7 @@
 		<script src="index.js"></script>
 		<script src="incubator_controller.js"></script>
 		<script src="pages/navigation_controller.js"></script>
+		<script src="dht_controller.js"></script>
 		<script src="power_button/controller.js"></script>
 		<script src="power_button/directive.js"></script>
 	</body>
