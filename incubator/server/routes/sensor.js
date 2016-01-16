@@ -7,3 +7,5 @@ router.get("/sensor", function(request, response, next) {
 		response.send(data);
 	}, next);
 });
+
+module.exports = router;
