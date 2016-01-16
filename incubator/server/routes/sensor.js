@@ -1,9 +1,12 @@
-var read_sensor = require("./bind_&_read");
+var read_sensor = require("./dht/bind_&_read");
 var express = require('express');
 var router = express.Router();
 
 router.get("/sensor", function(request, response, next) {
-	read_sensor().then(response.send, next);
+	function send(data) {
+		response.send(data);
+	}
+	read_sensor().then(send, next);
 });
 
 module.exports = router;

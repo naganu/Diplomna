@@ -9,10 +9,10 @@
 		home.sensor = {temp: 0.0, humi: 0.0};
 
 		setInterval(function() {
-			$resource('/sensor').save({}, {}, function (response) {
+			$resource('/sensor').get({}, {}, function (response) {
 				home.sensor.temp = response.temp;
 				home.sensor.humi = response.humi;
 			});
-		}, 200);
+		}, 2000);
 	}
 })()

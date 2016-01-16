@@ -6,7 +6,8 @@ var gcc = spawnSync("gcc", ["-o", "dht", "./read_AM2320.c"]);
 
 module.exports = function() {
 	return new Promise (function(resolve, reject) {
-		var dht = spawn("./dht", []);
+		var cmd = "/home/pi/Diplomna/incubator/server/dht";
+		var dht = spawn(cmd, []);
 
 		var result = "";
 
@@ -17,9 +18,9 @@ module.exports = function() {
 		  result += data;
 		});
 
-		dht.stderr.on('data', function (data) {
+		/*dht.stderr.on('data', function (data) {
 		  reject(new Error("sensor"));
-		});
+		});*/
 
 		dht.on('close', function () {
 		  var ret = result.split(" ");
@@ -29,7 +30,3 @@ module.exports = function() {
 		});
 	});
 }
-
-/*read().then(function(data) {
-	console.log(data.temp, data.humi);
-});*/
