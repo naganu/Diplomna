@@ -1,16 +1,16 @@
 //Copyright (c) 2014 Masayuki Takagi (kamonama@gmail.com)
 //Licensed under the LGPL License.
 
-#include <wiringPi.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <fcntl.h>              /* for O_RDWR */
 #include <string.h>             /* for memcpy */
 #include <linux/i2c-dev.h>      /* for I2C_SLAVE */
 #include <node.h>
+#include <wiringPi.h>
 
 using v8::FunctionCallbackInfo;
 using v8::Isolate;
