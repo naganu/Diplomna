@@ -1,7 +1,6 @@
 //Copyright (c) 2014 Masayuki Takagi (kamonama@gmail.com)
 //Licensed under the LGPL License.
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <unistd.h>
@@ -30,7 +29,6 @@ using v8::String;
  */
 #define AM2321_ADDR (0xB8 >> 1)
 
-
 /*
  * Removed udelay function
  */
@@ -38,15 +36,21 @@ using v8::String;
 
 int sys_set = wiringPiSetup();
 
+namespace last_read {
+  int tempInt = 0;
+  int tempFrac = 0;
+  int humiInt = 0;
+  int humiFrac = 0;
+}
 
 /*
  *  CRC16
- */ 
+ */
 
 unsigned short crc16( unsigned char *ptr, unsigned char len ) {
   unsigned short crc = 0xFFFF;
   unsigned char i;
-  
+
   while( len-- )
   {
     crc ^= *ptr++;
@@ -59,7 +63,7 @@ unsigned short crc16( unsigned char *ptr, unsigned char len ) {
       }
     }
   }
-  
+
   return crc;
 }
 
@@ -70,7 +74,6 @@ unsigned char crc16_low( unsigned short crc ) {
 unsigned char crc16_high( unsigned short crc ) {
   return crc >> 8;
 }
-
 
 /*
  *  st_am2321 Structure
@@ -85,11 +88,9 @@ void __check_crc16( st_am2321 measured ) {
 
   crc_m = crc16( measured.data, 6 );
   crc_s = (measured.data[7] << 8) + measured.data[6];
-  if ( crc_m != crc_s ) {
-    fprintf( stderr, "am2321: CRC16 does not match\n" );
-    exit( 1 );
-  }
-  
+  if ( crc_m != crc_s )
+    throw std::exception();
+
   return;
 }
 
@@ -126,7 +127,6 @@ short am2321_humidity_fraction( st_am2321 measured ) {
   return __am2321_humidity( measured ) % 10;
 }
 
-
 /*
  *  Measurement function
  */
@@ -139,90 +139,77 @@ st_am2321 am2321() {
 
   /* open I2C device */
   fd = open( I2C_DEVICE, O_RDWR );
-  if ( fd < 0 ) {
-    perror( "am2321(1)" );
-    exit( 1 );
-  }
+  if ( fd < 0 )
+    throw std::exception();
 
   /* set address of I2C device in 7 bits */
   ret = ioctl( fd, I2C_SLAVE, AM2321_ADDR );
-  if ( ret < 0 ) {
-    perror( "am2321(2)" );
-    exit( 2 );
-  }
- 
+  if ( ret < 0 )
+    throw std::exception();
+
  retry_cnt = 0;
  retry:
-  
+
   /* wake I2C device up */
   write( fd, NULL, 0);
-  
+
   /* write measurement request */
   data[0] = 0x03; data[1] = 0x00; data[2] = 0x04;
   ret = write( fd, data, 3 );
   if ( ret < 0 && retry_cnt++ < 5 ) {
-    fprintf( stderr, "am2321: retry\n" );
     delayMicroseconds( 1000 );
     goto retry;
   }
-  if ( ret < 0 ) {
-    perror( "am2321(3)" );
-    exit( 3 );
-  }
-  
+  if ( ret < 0 )
+    throw std::exception();
+
   /* wait for having measured */
   delayMicroseconds( 1500 );
-  
+
   /* read measured result */
   memset( data, 0x00, 8 );
   ret = read( fd, data, 8 );
-  if ( ret < 0 ) {
-    perror( "am2321(4)" );
-    exit( 4 );
-  }
-  
+  if ( ret < 0 )
+    throw std::exception();
+
   /* close I2C device */
   close( fd );
-  
+
   return __st_am2321( data );
 }
 
 //Removed st_am2321 am2321_stub() returns hard-coded data
 
-/*
- *  Print functions
- */
+//Removed void print_am2321_human_readable( st_am2321 measured ) and  Print functions print_am2321( st_am2321 measured )- no need of them
 
-void print_am2321( st_am2321 measured ) {
-  printf( "%d.%d %d.%d\n",
-          am2321_temperature_integral( measured ),
-          am2321_temperature_fraction( measured ),
-          am2321_humidity_integral( measured ),
-          am2321_humidity_fraction( measured ) );
-  return;
-}
-
-//Removed *void print_am2321_human_readable( st_am2321 measured ) - non human readable is easer to parse
-
-
-/*
- *  Main
- */
-
- //Removed all option related code -> no need of them
-
+//Removed all option related code -> no need of them
 
  void AM2320Object(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
 
     Local<Object> obj = Object::New(isolate);
 
-    st_am2321 measured = am2321();
+    st_am2321 measured;
 
-    obj->Set(String::NewFromUtf8(isolate, "tempInt"), Integer::New(args.GetIsolate(), am2321_temperature_integral(measured)));
-    obj->Set(String::NewFromUtf8(isolate, "tempFrac"), Integer::New(args.GetIsolate(), am2321_temperature_fraction(measured)));
-    obj->Set(String::NewFromUtf8(isolate, "humiInt"), Integer::New(args.GetIsolate(), am2321_humidity_integral(measured)));
-    obj->Set(String::NewFromUtf8(isolate, "humiFrac"), Integer::New(args.GetIsolate(), am2321_humidity_fraction(measured)));
+    bool error = false;
+
+    try {
+      measured = am2321();
+    } catch(const std::exception& e) {
+      error = true;
+    }
+
+    if(!error) {
+      last_read::tempInt = am2321_temperature_integral(measured);
+      last_read::tempFrac = am2321_temperature_fraction(measured);
+      last_read::humiInt = am2321_humidity_integral(measured);
+      last_read::humiFrac = am2321_humidity_fraction(measured);
+    }
+
+    obj->Set(String::NewFromUtf8(isolate, "tempInt"), Integer::New(args.GetIsolate(), last_read::tempInt));
+    obj->Set(String::NewFromUtf8(isolate, "tempFrac"), Integer::New(args.GetIsolate(), last_read::tempFrac));
+    obj->Set(String::NewFromUtf8(isolate, "humiInt"), Integer::New(args.GetIsolate(), last_read::humiInt));
+    obj->Set(String::NewFromUtf8(isolate, "humiFrac"), Integer::New(args.GetIsolate(), last_read::humiFrac));
 
     args.GetReturnValue().Set(obj);
  }
