@@ -5,8 +5,8 @@
 		<link rel="stylesheet" href="angular-material/angular-material.css">
 		<link rel="stylesheet" href="pages/style.css">
 	</head>
-	<body>
-		<div layout="column" layout-align="center center" layout-wrap>
+	<body layout="column" layout-align="center center" layout-fill >
+		<div layout="column" layout-align="center center" layout-wrap layout-margin layout-padding>
 			<div ng-controller="navigationController as navigate">
 				<md-button ng-class="navigate.button === 0 ? 'md-raised' : ''" class="md-primary" href="#/dht">Home</md-button>
 				<md-button ng-class="navigate.button === 1 ? 'md-raised' : ''" class="md-primary" href="#/test">Test</md-button>

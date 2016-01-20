@@ -27,7 +27,7 @@ function index(request, response) {
 
 function connect() {
 	var myIp = ip.address();
-	var data = {incubator: "asdfg", host: `${myIp}:${port}`};
+	var data = {incubator: "bobi", host: `${myIp}:${port}`};
 	var postData = JSON.stringify(data);
 
 	var options = {

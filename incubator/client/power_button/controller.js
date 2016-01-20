@@ -14,7 +14,7 @@
 			buttonOnOff.value = !buttonOnOff.value;
 			$resource(buttonOnOff.url).save({}, {state: buttonOnOff.value}, callback);
 			function callback(response) {
-				buttonOnOff.value = response.value;
+				//buttonOnOff.value = response.value;
 			};
 		}
 
