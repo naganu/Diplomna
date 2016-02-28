@@ -9,6 +9,7 @@
 		dht.sensor = {temp: 0.0, humi: 0.0};
 		dht.programOptions = ["p1", "p2", "p3"];
 		dht.programStoped = false;
+        dht.program = {};
 
 		dht.startProgram = function() {
 

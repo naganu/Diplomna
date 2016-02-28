@@ -1,0 +1,9 @@
+<div layout="column" layout-align="center center">
+    <md-subheader>{{$ctrl.name}}</md-subheader>
+    <div layout="row">
+        <md-input-container ng-repeat="settings in ['interval', 'temperature', 'humidity']">
+        <label>{{settings}}</label>
+        <input ng-model="$ctrl.settings[settings]" type="number"></input>
+        </md-input-container>
+    </div>
+</div>

@@ -9,20 +9,10 @@
     <md-button class="md-primary" ng-click="dht.startProgram()">Start</md-button>
   </div>
   <div lyaout="column" layout-align="center center">
-  		<div layout="row" layout-align="center center" layout-padding>
-  			<md-input-container>
-		      <label>Interval</label>
-		      <input ng-model="settings.interval" type="number"></input>
-		    </md-input-container>
-		    <md-input-container>
-		      <label>Temperature</label>
-		      <input ng-model="settings.temp" type="number"></input>
-		    </md-input-container>
-		    <md-input-container>
-		      <label>Humididty</label>
-		      <input ng-model="settings.humi" type="number"></input>
-		    </md-input-container>
-  		</div>
+        <settings-field
+            ng-repeat="settings in ['incubation', 'lupene']"
+            name="{{settings}}"
+            settings="dht.program[settings]"></settings-field>
   </div>
    <md-button class="md-warn">End</md-button>
 </div>	
