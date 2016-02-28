@@ -4,11 +4,11 @@ var wpi = require('wiring-pi');
 
 var outputs = [
 	{
-		pin: 1,
+		pin: 2,
 		url: '/int_vent' 
 	},
 	{
-		pin: 2,
+		pin: 1,
 		url: '/ext_vent' 
 	},
 	{

@@ -1,4 +1,13 @@
 <div class="md-title" layout="column" layout-align="center center">
+  <div layout="row">
+    <md-input-container>
+      <label>Program</label>
+      <md-select ng-model="dht.program">
+        <md-option ng-repeat="option in dht.programOptions">{{option}}</md-option>
+      </md-select>
+    </md-input-container>
+    <md-button md-theme="on_off" class="md-primary" ng-click="dht.startProgram()">Start</md-button>
+  </div>
   <div flex="auto" lyaout="column" layout-align="center center">
   		<div layout="row" layout-align="center center" flex="auto" layout-padding>
   			<span flex="70"> Current temperature </span>
@@ -12,5 +21,13 @@
   				<md-button class="md-primary md-raised">{{dht.sensor.humi}}</md-button>
   			</span>
   		</div>
+  </div>
+  <div layout="row">
+    <md-button
+      ng-class="dht.programStoped ? 'md-primary' : 'md-warn'"
+      ng-click="dht.programStoped ? dht.stopProgram() : dht.resumeProgram()" >
+      {{dht.programStoped ? "Resume" : "Stop"}}
+    </md-button>
+    <md-button class="md-warn">End</md-button>
   </div>
 </div>	
