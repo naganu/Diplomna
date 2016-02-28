@@ -103,28 +103,19 @@ st_am2321 __st_am2321( unsigned char* data ) {
 
 //Removed void am2321_dump( st_am2321 measured )
 
-short __am2321_temperature( st_am2321 measured ) {
-  return (measured.data[4] << 8) + measured.data[5];
+// Removed all data extraction functions 
+
+class number {
+    public:
+        short integer;
+        short fraction;
+        number(short& value): integer(value / 10), number(value % 10) {}
 }
 
-short am2321_temperature_integral( st_am2321 measured ) {
-  return __am2321_temperature( measured ) / 10;
-}
-
-short am2321_temperature_fraction( st_am2321 measured ) {
-  return __am2321_temperature( measured ) % 10;
-}
-
-short __am2321_humidity( st_am2321 measured ) {
-  return (measured.data[2] << 8) + measured.data[3];
-}
-
-short am2321_humidity_integral( st_am2321 measured ) {
-  return __am2321_humidity( measured ) / 10;
-}
-
-short am2321_humidity_fraction( st_am2321 measured ) {
-  return __am2321_humidity( measured ) % 10;
+number am2321_data(st_am2321 measured, short data) {
+    short wich = 2 * data;
+    short val = (measured.data[2 + wich] << 8) + measured.data[3 + wich];
+    return number(val);
 }
 
 /*
@@ -200,10 +191,12 @@ st_am2321 am2321() {
     }
 
     if(!error) {
-      last_read::tempInt = am2321_temperature_integral(measured);
-      last_read::tempFrac = am2321_temperature_fraction(measured);
-      last_read::humiInt = am2321_humidity_integral(measured);
-      last_read::humiFrac = am2321_humidity_fraction(measured);
+      number temp = am2321_data(measured, 0);
+      number humi = am2321_data(measured, 1);
+      last_read::tempInt = temp.integer;
+      last_read::tempFrac = temp.fraction;
+      last_read::humiInt = humi.integer;
+      last_read::humiFrac = humi.fraction;
     }
 
     obj->Set(String::NewFromUtf8(isolate, "tempInt"), Integer::New(args.GetIsolate(), last_read::tempInt));
