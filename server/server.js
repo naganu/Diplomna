@@ -1,6 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var cors = require('request');
+var makeRequest = require('request');
 var bodyParser = require('body-parser');
 var path = require('path');
 var ip = require('request-ip');
@@ -74,7 +74,7 @@ function redirect(request, response) {
       json: request.body 
     };
     console.log(req);
-    cors(req, function (error, res, body) {
+    makeRequest(req, function (error, res, body) {
         response.send(body);
     });
 }

@@ -4,8 +4,8 @@
 		<link rel="stylesheet" href="angular-material/angular-material.css">
 	</head>
 	<body>
-		<div ng-app="index" ng-controller="indexController" layout="column" layout-align="center center" layout-fill>
-			<div ng-hide="host" layout="column" layout-align="center center" layout-fill>
+		<div ng-controller="indexController" layout="column" layout-align="center center" layout-wrap>
+			<div ng-hide="host" layout="column" layout-align="center center" layout-wrap>
 				<md-input-container>
 					<label>Incobator</label>
 				 	<input ng-model="incubator">
@@ -13,9 +13,14 @@
 				<md-button class="md-primary" ng-click="connect()">Connect</md-button>
 				<md-button class="md-warn" ng-click="list()">List</md-button>
 			</div>
-			<div ng-show="host" layout="row">
-				<md-button class="md-primary" ng-click="req()">Req</md-button>
-			</div>
+			<div ng-show="host" layout="column" layout-align="center center" layout-wrap layout-margin layout-padding>
+                <div ng-controller="navigationController as navigate">
+                    <md-button ng-class="navigate.button === 0 ? 'md-raised' : ''" class="md-primary" href="#/dht">Home</md-button>
+                    <md-button ng-class="navigate.button === 1 ? 'md-raised' : ''" class="md-primary" href="#/test">Test</md-button>
+                    <md-button ng-class="navigate.button === 2 ? 'md-raised' : ''" class="md-primary" href="#/settings">Settings</md-button>
+                    <div ng-view></div>
+                </div>
+            </div>
 		</div>
 		<script src="angular/angular.js"></script>
 		<script src="angular-material/angular-material.js"></script>
@@ -23,6 +28,13 @@
 		<script src="angular-aria/angular-aria.js"></script>
 		<script src="angular-animate/angular-animate.js"></script>
 		<script src="angular-resource/angular-resource.js"></script>
+		<script src="angular-route/angular-route.js"></script>
 		<script src="index.js"></script>
+        <script src="indexController.js"></script>
+		<script src="incubator_controller.js"></script>
+		<script src="navigation_controller.js"></script>
+		<script src="dht_controller.js"></script>
+		<script src="power_button/controller.js"></script>
+		<script src="power_button/component.js"></script>
 	</body>
 </html>
