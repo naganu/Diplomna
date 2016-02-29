@@ -67,14 +67,11 @@ function incubator(request, response, next) {
 }
 
 function redirect(request, response) {
-    var uri = "http://" + request.incubator + request.url;
-    var req = {
-      uri: uri,
+    makeRequest({
+      uri: "http://" + request.incubator + request.url,
       method: request.method,
       json: request.body 
-    };
-    console.log(req);
-    makeRequest(req, function (error, res, body) {
+    }, function (error, res, body) {
         response.send(body);
     });
 }
