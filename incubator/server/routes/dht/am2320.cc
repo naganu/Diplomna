@@ -36,6 +36,8 @@ using v8::String;
 
 int sys_set = wiringPiSetup();
 
+bool _error = false;
+
 namespace last_read {
   int tempInt = 0;
   int tempFrac = 0;
@@ -89,7 +91,7 @@ void __check_crc16( st_am2321 measured ) {
   crc_m = crc16( measured.data, 6 );
   crc_s = (measured.data[7] << 8) + measured.data[6];
   if ( crc_m != crc_s )
-    throw std::exception();
+    _error = true;
 
   return;
 }
@@ -109,8 +111,8 @@ class number {
     public:
         short integer;
         short fraction;
-        number(short& value): integer(value / 10), number(value % 10) {}
-}
+        number(short& value): integer(value / 10), fraction(value % 10) {}
+};
 
 number am2321_data(st_am2321 measured, short data) {
     short wich = 2 * data;
@@ -131,12 +133,12 @@ st_am2321 am2321() {
   /* open I2C device */
   fd = open( I2C_DEVICE, O_RDWR );
   if ( fd < 0 )
-    throw std::exception();
+    _error = true;
 
   /* set address of I2C device in 7 bits */
   ret = ioctl( fd, I2C_SLAVE, AM2321_ADDR );
   if ( ret < 0 )
-    throw std::exception();
+    _error = true;
 
  retry_cnt = 0;
  retry:
@@ -152,7 +154,7 @@ st_am2321 am2321() {
     goto retry;
   }
   if ( ret < 0 )
-    throw std::exception();
+    _error = true;
 
   /* wait for having measured */
   delayMicroseconds( 1500 );
@@ -161,7 +163,7 @@ st_am2321 am2321() {
   memset( data, 0x00, 8 );
   ret = read( fd, data, 8 );
   if ( ret < 0 )
-    throw std::exception();
+    _error = true;
 
   /* close I2C device */
   close( fd );
@@ -182,15 +184,11 @@ st_am2321 am2321() {
 
     st_am2321 measured;
 
-    bool error = false;
+    _error = false;
 
-    try {
-      measured = am2321();
-    } catch(const std::exception& e) {
-      error = true;
-    }
+    measured = am2321();
 
-    if(!error) {
+    if(!_error) {
       number temp = am2321_data(measured, 0);
       number humi = am2321_data(measured, 1);
       last_read::tempInt = temp.integer;

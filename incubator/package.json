@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "bobi",
-    "start": "sudo node server/server.js bobi 192.168.0.103:4000",
+    "start": "sudo node server/server.js bobi 192.168.0.104:4000",
     "local": "sudo node server/server.js bobi 127.0.0.1:4000"
   },
   "repository": {

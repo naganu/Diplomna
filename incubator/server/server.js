@@ -4,11 +4,11 @@ var makeRequest = require('request');
 var bodyParser = require('body-parser');
 var server = express();
 var port = 3000;
-//var routes = require('./routes/router');
+var routes = require('./routes/router');
 
 server.set('trust proxy', true);
 server.use(bodyParser.json());
-//server.use(routes);
+server.use(routes);
 server.post('/req', function (request, response) {
    response.send(request.body); 
 });
