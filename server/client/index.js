@@ -18,11 +18,11 @@
 	    	templateUrl: 'pages/settings.html',
 	    	controller: 'incubatorController',
 	    	controllerAs: 'incubator'
-	    }).when('/dht', {
+	    }).when('/home', {
 	    	templateUrl: 'pages/dht.html',
 	    	controller: 'dhtController',
 	    	controllerAs: 'dht'
-	    }).otherwise('/dht');
+	    }).otherwise('/home');
 	}
 
 	config.$inject = ['$mdThemingProvider', '$routeProvider'];
