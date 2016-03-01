@@ -1,11 +1,8 @@
 (function () {
 	'use strict';
-	angular.module('incubator')
-	.controller('navigationController', controller);
 
 	function controller($scope) {
 		var navigate = this;
-		navigate.$inject = ['$scope'];
 		navigate.paths = ['/test', '/settings'];
 		navigate.sensor = {temp: "temp", humi: "humi"};
 
@@ -16,4 +13,9 @@
 				navigate.button = 0;
 		});
 	}
+    
+    controller.$inject = ['$scope']
+    
+    angular.module('incubator').controller('navigationController', controller);
+   
 })()

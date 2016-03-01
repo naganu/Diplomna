@@ -9,9 +9,6 @@ var routes = require('./routes/router');
 server.set('trust proxy', true);
 server.use(bodyParser.json());
 server.use(routes);
-server.post('/req', function (request, response) {
-   response.send(request.body); 
-});
 
 server.listen(port);
 

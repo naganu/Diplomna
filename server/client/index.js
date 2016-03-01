@@ -3,11 +3,7 @@
     
     var module = 'incubator';
 
-	angular.module(module, ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource', 'ngRoute'])
-	.config(config);
-
 	function config($mdThemingProvider, $routeProvider) {
-		//this.$inject = ['$mdThemingProvider', '$routeProvider'];
 		$mdThemingProvider.theme('default')
 	    .primaryPalette('blue');
 		$mdThemingProvider.theme('on_off')
@@ -30,6 +26,8 @@
 	}
 
 	config.$inject = ['$mdThemingProvider', '$routeProvider'];
+    
+    angular.module(module, ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource', 'ngRoute']).config(config);
 
 	angular.element(document).ready(function() {
 		angular.bootstrap(document, [module]);

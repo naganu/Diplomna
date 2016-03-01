@@ -20,7 +20,6 @@ server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, './node_modules')));
 server.use(express.static(clientDir));
 server.use(getIp);
-server.get('/dev/list', dev_list);
 server.get('/connect/:incubator', connection);
 server.post('/connect', connect);
 server.use('/incubator', incubator, redirect);
@@ -43,12 +42,6 @@ function connection(request, response, next) {
 function connect(request, response, next) {
     connected.create(request.body).then(function (doc) {
         response.send({success: true});
-    }, next);
-}
-
-function dev_list(request, response, next) {
-    connected.find({}).exec().then(function (incs) {
-        response.send({list: incs});
     }, next);
 }
 

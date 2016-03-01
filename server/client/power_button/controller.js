@@ -1,12 +1,8 @@
 (function () {
 	'use strict';
-	
-	angular.module('incubator')
-		.controller('powerButtonController', controller);
 
 	function controller($resource) {
 		var buttonOnOff = this;
-		buttonOnOff.$inject = ['$resource'];
 		buttonOnOff.value = false;
 		buttonOnOff.press = press;
 
@@ -17,7 +13,9 @@
 				//buttonOnOff.value = response.value;
 			};
 		}
-
-		
 	}
+    
+    controller.$inject = ['$resource'];
+    
+    angular.module('incubator').controller('powerButtonController', controller);
 })()

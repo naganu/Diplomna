@@ -1,54 +1,54 @@
 (function () {
 	'use strict';
-	angular.module('incubator')
-	.controller('incubatorController', controller);
 
-function controller($resource) {
-	var incubator = this;
-	incubator.$inject = ['$resource'];
+    function controller($resource, $interval) {
+        var incubator = this;
 
-	incubator.buttons = [
-		{
-			message: 'Internal ventilator',
-			url: '/int_vent' 
-		},
-		{
-			message: 'External ventilator',
-			url: '/ext_vent' 
-		},
-		{
-			message: 'Heater',
-			url: '/heater' 
-		},
-		{
-			message: 'Led light',
-			url: '/led_light' 
-		},
-		{
-			message: 'Motor - rotation',
-			url: '/mot_rot' 
-		},
-		{
-			message: 'Peristaltic pump',
-			url: '/per_pump' 
-		},
-		{
-			message: 'Buzzer',
-			url: '/buzzer' 
-		}
-	];
+        incubator.buttons = [
+            {
+                message: 'Internal ventilator',
+                url: '/int_vent' 
+            },
+            {
+                message: 'External ventilator',
+                url: '/ext_vent' 
+            },
+            {
+                message: 'Heater',
+                url: '/heater' 
+            },
+            {
+                message: 'Led light',
+                url: '/led_light' 
+            },
+            {
+                message: 'Motor - rotation',
+                url: '/mot_rot' 
+            },
+            {
+                message: 'Peristaltic pump',
+                url: '/per_pump' 
+            },
+            {
+                message: 'Buzzer',
+                url: '/buzzer' 
+            }
+        ];
 
-	incubator.hall = {
-		message: 'Hall sensor',
-		url: '/hall',
-		value: false 
-	}
+        incubator.hall = {
+            message: 'Hall sensor',
+            url: '/hall',
+            value: false 
+        }
 
-	setInterval(function() {
-		$resource(incubator.hall.url).save({}, {}, function (response) {
-			incubator.hall.value = response.state;
-		});
-	}, 200);
-}
-
+        $interval(function() {
+            $resource(incubator.hall.url).save({}, {}, function (response) {
+                incubator.hall.value = response.state;
+            });
+        }, 200);
+    }
+    
+    controller.$inject = ['$resource', '$interval'];
+    
+    angular.module('incubator').controller('incubatorController', controller);
 })()
