@@ -7,7 +7,6 @@ var ip = require('request-ip');
 var server = express();
 var port = 4000;
 var clientDir = path.join(__dirname, './client');
-var indexPage = path.join(clientDir, 'pages/index.html');
 var errorPage = path.join(clientDir, 'pages/error.html');
 var connected = require('./models/connected');
 var incubators = require('./models/incubators');
@@ -18,12 +17,12 @@ mongoose.Promise = global.Promise;
 server.set('trust proxy', true);
 server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, './node_modules')));
-server.use(express.static(clientDir));
+server.use(express.static(clientDir, {index: 'pages/index.html'}));
 server.use(getIp);
 server.get('/connect/:incubator', connection);
 server.post('/connect', connect);
 server.use('/incubator', incubator, redirect);
-server.use(index);
+server.use(error);
 server.listen(port);
 
 function getIp (request, response, next) {
@@ -45,11 +44,8 @@ function connect(request, response, next) {
     }, next);
 }
 
-function index(request, response) {
-	if(request.url === '/' && request.method === 'GET')
-		response.sendFile(indexPage);
-	else
-		response.sendFile(errorPage);
+function error(request, response) {
+	response.sendFile(errorPage);
 }
 
 function incubator(request, response, next) {
