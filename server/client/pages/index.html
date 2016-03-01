@@ -15,9 +15,11 @@
 			</div>
 			<div ng-show="host" layout="column" layout-align="center center" layout-wrap layout-margin layout-padding>
                 <div ng-controller="navigationController as navigate">
-                    <md-button ng-class="navigate.button === 0 ? 'md-raised' : ''" class="md-primary" href="#/dht">Home</md-button>
-                    <md-button ng-class="navigate.button === 1 ? 'md-raised' : ''" class="md-primary" href="#/test">Test</md-button>
-                    <md-button ng-class="navigate.button === 2 ? 'md-raised' : ''" class="md-primary" href="#/settings">Settings</md-button>
+                    <md-button
+                    	ng-repeat="button in ['home', 'test', 'settings']"
+                    	ng-class="navigate.button === $index ? 'md-raised' : ''"
+                    	class="md-primary"
+                    	ng-href="#/{{button}}">{{button}}</md-button>
                     <div ng-view></div>
                 </div>
             </div>
