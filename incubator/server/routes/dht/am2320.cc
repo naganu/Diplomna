@@ -1,5 +1,6 @@
 //Copyright (c) 2014 Masayuki Takagi (kamonama@gmail.com)
 //Licensed under the LGPL License.
+//Original code: https://github.com/takagi/am2321/blob/master/am2321.c
 
 #include <stdlib.h>
 #include <unistd.h>
