@@ -108,12 +108,11 @@ st_am2321 __st_am2321( unsigned char* data ) {
 
 // Removed all data extraction functions 
 
-class number {
-    public:
+typedef struct {
         short integer;
         short fraction;
         number(short& value): integer(value / 10), fraction(value % 10) {}
-};
+} number;
 
 number am2321_data(st_am2321 measured, short data) {
     short wich = 2 * data;
