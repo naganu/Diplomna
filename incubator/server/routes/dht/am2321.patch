@@ -141,12 +141,11 @@ index 77eeade..2e79cb2 100644
 -short __am2321_humidity( st_am2321 measured ) {
 -  return (measured.data[2] << 8) + measured.data[3];
 -}
-+class number {
-+    public:
++typedef struct {
 +        short integer;
 +        short fraction;
 +        number(short& value): integer(value / 10), fraction(value % 10) {}
-+};
++} number;
  
 -short am2321_humidity_integral( st_am2321 measured ) {
 -  return __am2321_humidity( measured ) / 10;
