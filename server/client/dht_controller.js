@@ -21,10 +21,10 @@
 		};
 
 		$interval(function() {
-			/*$resource('/sensor').get({}, {}, function (response) {
+			$resource('/incubator/sensor').get({}, {}, function (response) {
 				dht.sensor.temp = response.temp;
 				dht.sensor.humi = response.humi;
-			});*/
+			})
 		}, 2000);
 	}
     

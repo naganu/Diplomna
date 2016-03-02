@@ -7,11 +7,10 @@
 		<div ng-controller="indexController" layout="column" layout-align="center center" layout-wrap>
 			<div ng-hide="host" layout="column" layout-align="center center" layout-wrap>
 				<md-input-container>
-					<label>Incobator</label>
+					<label>Incubator</label>
 				 	<input ng-model="incubator">
 				</md-input-container>
 				<md-button class="md-primary" ng-click="connect()">Connect</md-button>
-				<md-button class="md-warn" ng-click="list()">List</md-button>
 			</div>
 			<div ng-show="host" layout="column" layout-align="center center" layout-wrap layout-margin layout-padding>
                 <div ng-controller="navigationController as navigate">
