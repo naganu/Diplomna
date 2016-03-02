@@ -1,10 +1,11 @@
-diff --git a/orig.c b/change.cc
+diff --git ./am2321.c ./am2320.cc
 index 77eeade..2e79cb2 100644
---- a/orig.c
-+++ b/change.cc
+--- ./am2321.c
++++ ./am2320.cc
 @@ -1,12 +1,26 @@
 +//Copyright (c) 2014 Masayuki Takagi (kamonama@gmail.com)
 +//Licensed under the LGPL License.
++//Original code: https://github.com/takagi/am2321/blob/master/am2321.c
 +
  #include <stdlib.h>
 -#include <stdio.h>
