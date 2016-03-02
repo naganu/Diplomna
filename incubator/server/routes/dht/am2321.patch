@@ -1,0 +1,353 @@
+diff --git a/orig.c b/change.cc
+index 77eeade..2e79cb2 100644
+--- a/orig.c
++++ b/change.cc
+@@ -1,12 +1,26 @@
++//Copyright (c) 2014 Masayuki Takagi (kamonama@gmail.com)
++//Licensed under the LGPL License.
++
+ #include <stdlib.h>
+-#include <stdio.h>
++#include <unistd.h>
++#include <unistd.h>
++#include <sys/ioctl.h>
+ #include <fcntl.h>              /* for O_RDWR */
+ #include <string.h>             /* for memcpy */
+ #include <linux/i2c-dev.h>      /* for I2C_SLAVE */
++#include <node.h>
++#include <wiringPi.h>
+ 
++using v8::FunctionCallbackInfo;
++using v8::Isolate;
++using v8::Local;
++using v8::Object;
++using v8::Integer;
++using v8::Value;
++using v8::String;
+ 
+ /* I2C character device */
+-#define I2C_DEVICE "/dev/i2c-0"
++#define I2C_DEVICE "/dev/i2c-1" //Rasberry Pi model 2 B (0 -> 1)
+ 
+ /* I2C address of AM2321 sensor in 7 bits
+  * - the first 7 bits should be passed to ioctl system call
+@@ -15,34 +29,30 @@
+  */
+ #define AM2321_ADDR (0xB8 >> 1)
+ 
+-
+ /*
+- *  udelay function
++ * Removed udelay function
+  */
+ 
+-long timeval_to_usec( struct timeval tm ) {
+-  return tm.tv_sec * 1000000 + tm.tv_usec;
+-}
+ 
+-void udelay( long us ) {
+-  struct timeval current;
+-  struct timeval start;
+-  
+-  gettimeofday( &start, NULL );
+-  do {
+-    gettimeofday( &current, NULL );
+-  } while( timeval_to_usec( current ) - timeval_to_usec( start ) < us );
+-}
++int sys_set = wiringPiSetup();
+ 
++bool _error = false;
++
++namespace last_read {
++  int tempInt = 0;
++  int tempFrac = 0;
++  int humiInt = 0;
++  int humiFrac = 0;
++}
+ 
+ /*
+  *  CRC16
+- */ 
++ */
+ 
+ unsigned short crc16( unsigned char *ptr, unsigned char len ) {
+   unsigned short crc = 0xFFFF;
+   unsigned char i;
+-  
++
+   while( len-- )
+   {
+     crc ^= *ptr++;
+@@ -55,7 +65,7 @@ unsigned short crc16( unsigned char *ptr, unsigned char len ) {
+       }
+     }
+   }
+-  
++
+   return crc;
+ }
+ 
+@@ -67,7 +77,6 @@ unsigned char crc16_high( unsigned short crc ) {
+   return crc >> 8;
+ }
+ 
+-
+ /*
+  *  st_am2321 Structure
+  */
+@@ -81,11 +90,9 @@ void __check_crc16( st_am2321 measured ) {
+ 
+   crc_m = crc16( measured.data, 6 );
+   crc_s = (measured.data[7] << 8) + measured.data[6];
+-  if ( crc_m != crc_s ) {
+-    fprintf( stderr, "am2321: CRC16 does not match\n" );
+-    exit( 1 );
+-  }
+-  
++  if ( crc_m != crc_s )
++    _error = true;
++
+   return;
+ }
+ 
+@@ -96,40 +103,23 @@ st_am2321 __st_am2321( unsigned char* data ) {
+   return result;
+ }
+ 
+-void am2321_dump( st_am2321 measured ) {
+-  printf( "[ 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x ]\n",
+-          measured.data[0], measured.data[1],
+-          measured.data[2], measured.data[3],
+-          measured.data[4], measured.data[5],
+-          measured.data[6], measured.data[7] );
+-  return;
+-}
+-
+-short __am2321_temperature( st_am2321 measured ) {
+-  return (measured.data[4] << 8) + measured.data[5];
+-}
++//Removed void am2321_dump( st_am2321 measured )
+ 
+-short am2321_temperature_integral( st_am2321 measured ) {
+-  return __am2321_temperature( measured ) / 10;
+-}
++// Removed all data extraction functions 
+ 
+-short am2321_temperature_fraction( st_am2321 measured ) {
+-  return __am2321_temperature( measured ) % 10;
+-}
+-
+-short __am2321_humidity( st_am2321 measured ) {
+-  return (measured.data[2] << 8) + measured.data[3];
+-}
++class number {
++    public:
++        short integer;
++        short fraction;
++        number(short& value): integer(value / 10), fraction(value % 10) {}
++};
+ 
+-short am2321_humidity_integral( st_am2321 measured ) {
+-  return __am2321_humidity( measured ) / 10;
++number am2321_data(st_am2321 measured, short data) {
++    short wich = 2 * data;
++    short val = (measured.data[2 + wich] << 8) + measured.data[3 + wich];
++    return number(val);
+ }
+ 
+-short am2321_humidity_fraction( st_am2321 measured ) {
+-  return __am2321_humidity( measured ) % 10;
+-}
+-
+-
+ /*
+  *  Measurement function
+  */
+@@ -142,144 +132,82 @@ st_am2321 am2321() {
+ 
+   /* open I2C device */
+   fd = open( I2C_DEVICE, O_RDWR );
+-  if ( fd < 0 ) {
+-    perror( "am2321(1)" );
+-    exit( 1 );
+-  }
++  if ( fd < 0 )
++    _error = true;
+ 
+   /* set address of I2C device in 7 bits */
+   ret = ioctl( fd, I2C_SLAVE, AM2321_ADDR );
+-  if ( ret < 0 ) {
+-    perror( "am2321(2)" );
+-    exit( 2 );
+-  }
+- 
++  if ( ret < 0 )
++    _error = true;
++
+  retry_cnt = 0;
+  retry:
+-  
++
+   /* wake I2C device up */
+   write( fd, NULL, 0);
+-  
++
+   /* write measurement request */
+   data[0] = 0x03; data[1] = 0x00; data[2] = 0x04;
+   ret = write( fd, data, 3 );
+   if ( ret < 0 && retry_cnt++ < 5 ) {
+-    fprintf( stderr, "am2321: retry\n" );
+-    udelay( 1000 );
++    delayMicroseconds( 1000 );
+     goto retry;
+   }
+-  if ( ret < 0 ) {
+-    perror( "am2321(3)" );
+-    exit( 3 );
+-  }
+-  
++  if ( ret < 0 )
++    _error = true;
++
+   /* wait for having measured */
+-  udelay( 1500 );
+-  
++  delayMicroseconds( 1500 );
++
+   /* read measured result */
+   memset( data, 0x00, 8 );
+   ret = read( fd, data, 8 );
+-  if ( ret < 0 ) {
+-    perror( "am2321(4)" );
+-    exit( 4 );
+-  }
+-  
++  if ( ret < 0 )
++    _error = true;
++
+   /* close I2C device */
+   close( fd );
+-  
+-  return __st_am2321( data );
+-}
+ 
+-st_am2321 am2321_stub() {
+-  unsigned char data[] = { 0x03, 0x04, 0x01, 0x41,
+-                           0x00, 0xEA, 0x21, 0x8F };
+   return __st_am2321( data );
+ }
+ 
++//Removed st_am2321 am2321_stub() returns hard-coded data
+ 
+-/*
+- *  Print functions
+- */
++//Removed void print_am2321_human_readable( st_am2321 measured ) and  Print functions print_am2321( st_am2321 measured )- no need of them
+ 
+-void print_am2321( st_am2321 measured ) {
+-  printf( "%d.%d %d.%d\n",
+-          am2321_temperature_integral( measured ),
+-          am2321_temperature_fraction( measured ),
+-          am2321_humidity_integral( measured ),
+-          am2321_humidity_fraction( measured ) );
+-  return;
+-}
++//Removed all option related code -> no need of them
+ 
+-void print_am2321_human_readable( st_am2321 measured ) {
+-  printf( "Temperature %d.%d [C]\n",
+-          am2321_temperature_integral( measured ),
+-          am2321_temperature_fraction( measured ) );
+-  printf( "Humidity    %d.%d [%%]\n",
+-          am2321_humidity_integral( measured ),
+-          am2321_humidity_fraction( measured ) );
+-  return;
+-}
++ void AM2320Object(const FunctionCallbackInfo<Value>& args) {
++    Isolate* isolate = args.GetIsolate();
+ 
++    Local<Object> obj = Object::New(isolate);
+ 
+-/*
+- *  Main
+- */
++    st_am2321 measured;
+ 
+-#define OPT_HUMAN_READABLE 0x1
+-#define OPT_STUB 0x2
++    _error = false;
+ 
+-int print_help() {
+-  fprintf( stderr,
+-           "Usage: am2321 [-r] [-s]\n"
+-           "Get temperature and humidity measured with Aosong's AM2321 sensor.\n"
+-           "  -r    human readable output\n"
+-           "  -s    not measure with AM2321, instead stub of 23.4[C] and 32.1[%]\n" );
+-  exit( 1 );
+-}
++    measured = am2321();
+ 
+-int parse_options( int argc, char* argv[]) {
+-  int options = 0;
+-  int flags = 0;
+-  
+-  while( 1+flags < argc && argv[1+flags][0] == '-' ) {
+-    switch( argv[1+flags][1] ) {
+-    case 'r': options |= OPT_HUMAN_READABLE; break;
+-    case 's': options |= OPT_STUB; break;
+-    default:
+-      fprintf( stderr, "am2321: Unsupported option \"%s\"\n", argv[1+flags] );
+-      print_help();
+-      exit( 1 );
++    if(!_error) {
++      number temp = am2321_data(measured, 0);
++      number humi = am2321_data(measured, 1);
++      last_read::tempInt = temp.integer;
++      last_read::tempFrac = temp.fraction;
++      last_read::humiInt = humi.integer;
++      last_read::humiFrac = humi.fraction;
+     }
+-    flags++;
+-  }
+-  
+-  return options;
+-}
+ 
+-int is_opt_human_readable( int options ) {
+-  return options & OPT_HUMAN_READABLE;
+-}
++    obj->Set(String::NewFromUtf8(isolate, "tempInt"), Integer::New(args.GetIsolate(), last_read::tempInt));
++    obj->Set(String::NewFromUtf8(isolate, "tempFrac"), Integer::New(args.GetIsolate(), last_read::tempFrac));
++    obj->Set(String::NewFromUtf8(isolate, "humiInt"), Integer::New(args.GetIsolate(), last_read::humiInt));
++    obj->Set(String::NewFromUtf8(isolate, "humiFrac"), Integer::New(args.GetIsolate(), last_read::humiFrac));
+ 
+-int is_opt_stub( int options ) {
+-  return options & OPT_STUB;
+-}
++    args.GetReturnValue().Set(obj);
++ }
+ 
+-int main( int argc, char* argv[] ) {
+-  int options;
+-  st_am2321 measured;
+-
+-  /* parse the given options */
+-  options = parse_options( argc, argv );
+-  
+-  /* measure temperature and humidity */
+-  measured = ! is_opt_stub( options ) ? am2321() : am2321_stub();
+-
+-  /* print measured temperature and humidity */
+-  if ( ! is_opt_human_readable( options ) ) {
+-    print_am2321( measured );
+-  } else {
+-    print_am2321_human_readable( measured );
+-  }
+-  
+-  return 0;
++void Init(Local<Object> exports, Local<Object> module) {
++  NODE_SET_METHOD(module, "exports", AM2320Object);
+ }
++
++NODE_MODULE(am2320, Init)
++
