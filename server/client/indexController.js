@@ -5,14 +5,14 @@
         $scope.connect = connect;
 
         function connect() {
-            $resource('/connect/:incubator').get({incubator: $scope.incubator}, function (response) {
-                if(response.success)
+            //$resource('/connect/:incubator').get({incubator: $scope.incubator}, function (response) {
+                //if(response.success)
                     $scope.host = true;
-            });
+            //});
         }
     }
-    
+
     controller.$inject = ['$scope', '$resource'];
-    
+
     angular.module('incubator').controller('indexController', controller);
 })()

@@ -19,8 +19,8 @@
                     	ng-class="navigate.button === $index ? 'md-raised' : ''"
                     	class="md-primary"
                     	ng-href="#/{{button}}">{{button}}</md-button>
-                    <div ng-view></div>
                 </div>
+				<div ng-view></div>
             </div>
 		</div>
 		<script src="angular/angular.js"></script>
@@ -35,8 +35,10 @@
 		<script src="incubator_controller.js"></script>
 		<script src="navigation_controller.js"></script>
 		<script src="dht_controller.js"></script>
+		<script src="settings_controller.js"></script>
 		<script src="power_button/controller.js"></script>
 		<script src="power_button/component.js"></script>
         <script src="settings_field/component.js"></script>
+		<script src="settings_fields/component.js"></script>
 	</body>
 </html>

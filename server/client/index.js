@@ -1,6 +1,6 @@
 (function () {
 	'use strict';
-    
+
     var module = 'incubator';
 
 	function config($mdThemingProvider, $routeProvider) {
@@ -16,8 +16,8 @@
 	    	controllerAs: 'incubator'
 	    }).when('/settings', {
 	    	templateUrl: 'pages/settings.html',
-	    	controller: 'incubatorController',
-	    	controllerAs: 'incubator'
+	    	controller: 'settingsController',
+	    	controllerAs: 'settings'
 	    }).when('/home', {
 	    	templateUrl: 'pages/dht.html',
 	    	controller: 'dhtController',
@@ -26,7 +26,7 @@
 	}
 
 	config.$inject = ['$mdThemingProvider', '$routeProvider'];
-    
+
     angular.module(module, ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource', 'ngRoute']).config(config);
 
 	angular.element(document).ready(function() {

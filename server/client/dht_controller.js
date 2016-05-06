@@ -20,15 +20,15 @@
 			dht.programStoped = true;
 		};
 
-		$interval(function() {
+		/*$interval(function() {
 			$resource('/incubator/sensor').get({}, {}, function (response) {
 				dht.sensor.temp = response.temp;
 				dht.sensor.humi = response.humi;
 			})
-		}, 2000);
+		}, 2000);*/
 	}
-    
+
     controller.$inject = ['$resource', '$interval'];
-    
+
     angular.module('incubator').controller('dhtController', controller);
 })()

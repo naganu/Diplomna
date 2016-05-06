@@ -1,9 +1,16 @@
 <div layout="column" layout-align="center center">
-    <md-subheader>{{$ctrl.name}}</md-subheader>
     <div layout="row">
-        <md-input-container ng-repeat="settings in ['interval', 'temperature', 'humidity']">
-        <label>{{settings}}</label>
-        <input ng-model="$ctrl.settings[settings]" type="number"></input>
+        <md-input-container
+            ng-repeat="setting in $ctrl.all"
+            ng-if="setting !== $ctrl.all[1] || $ctrl.rotateField">
+            <label>{{setting}}</label>
+            <input
+                ng-model="$ctrl.settings[setting]"
+                type="number"
+                min="1"
+                ng-change="$ctrl.onUpdate({field: setting, value: $ctrl.settings[setting]})">
+            </input>
         </md-input-container>
+        <md-button class="md-warn md-raised" ng-click="$ctrl.onRemove()">Remove</md-button>
     </div>
 </div>

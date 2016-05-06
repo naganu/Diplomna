@@ -4,7 +4,7 @@
   "description": "raspberry pi based incubator",
   "main": "index.js",
   "scripts": {
-    "test": "bobi",
+    "dht": "cd server/routes/dht && node-gyp configure build",
     "start": "sudo node server/server.js bobi 192.168.0.104:4000",
     "local": "sudo node server/server.js bobi 127.0.0.1:4000"
   },

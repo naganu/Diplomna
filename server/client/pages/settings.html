@@ -1,18 +1,15 @@
 <div class="md-title" layout="column" layout-align="center center">
-  <div layout="row">
-    <md-input-container>
-      <label>Program</label>
-      <md-select ng-model="dht.program">
-        <md-option ng-repeat="option in dht.programOptions">{{option}}</md-option>
-      </md-select>
-    </md-input-container>
-    <md-button class="md-primary" ng-click="dht.startProgram()">Start</md-button>
-  </div>
   <div lyaout="column" layout-align="center center">
-        <settings-field
-            ng-repeat="settings in ['incubation', 'hatching']"
-            name="{{settings}}"
-            settings="dht.program[settings]"></settings-field>
+    <settings-fields
+        ng-repeat="setting in ['incubation', 'hatching']"
+        name="{{setting}}"
+        rotate-field="setting === 'incubation'"
+        on-update="settings.update(setting, settingsList)">
+    </settings-fields>
   </div>
-   <md-button class="md-warn">End</md-button>
-</div>	
+  <md-input-container>
+    <label>Program name</label>
+    <input ng-model="settings.program.name"></input>
+  </md-input-container>
+  <md-button class="md-primary md-raised" ng-click="settings.saveProgram()">Save</md-button>
+</div>
