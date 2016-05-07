@@ -6,15 +6,13 @@
         bindings: {
             onUpdate: "&",
 			onRemove: "&",
+			removeBtn: "<",
 			rotateField: "<"
         },
 		controller: function() {
 			var $ctrl = this;
 			$ctrl.all = ['period', 'interval', 'temperature', 'humidity'];
 			$ctrl.settings = {};
-			for(var i in $ctrl.all) {
-				$ctrl.settings[$ctrl.all[i]] = 0;
-			}
 		}
     });
 })()

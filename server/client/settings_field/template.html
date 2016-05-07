@@ -8,9 +8,13 @@
                 ng-model="$ctrl.settings[setting]"
                 type="number"
                 min="1"
-                ng-change="$ctrl.onUpdate({field: setting, value: $ctrl.settings[setting]})">
+                ng-change="$ctrl.onUpdate({
+                    field: setting,
+                    value: $ctrl.settings[setting],
+                    fields: $ctrl.all.length + ($ctrl.rotateField ? 1 : 0)
+                })">
             </input>
         </md-input-container>
-        <md-button class="md-warn md-raised" ng-click="$ctrl.onRemove()">Remove</md-button>
+        <md-button ng-if="$ctrl.removeBtn" class="md-warn md-raised" ng-click="$ctrl.onRemove()">Remove</md-button>
     </div>
 </div>

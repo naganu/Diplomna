@@ -1,10 +1,11 @@
-<div layout="column" layout-align="center center">
+<div layout="column" layout-align="center center" md-theme="on_off">
     <md-subheader>{{$ctrl.name}}</md-subheader>
     <div layout="column">
         <settings-field
             ng-repeat="setting in $ctrl.settings"
             rotate-field="$ctrl.rotateField"
-            on-update="$ctrl.update($index, field, value)"
+            on-update="$ctrl.update($index, field, value, fields)"
+            remove-btn="!!$index"
             on-remove="$ctrl.remove($index)">
         </settings-field>
     </div>

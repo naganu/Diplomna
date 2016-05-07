@@ -1,10 +1,10 @@
 <div class="md-title" layout="column" layout-align="center center">
   <div lyaout="column" layout-align="center center">
     <settings-fields
-        ng-repeat="setting in ['incubation', 'hatching']"
+        ng-repeat="setting in settings.all"
         name="{{setting}}"
         rotate-field="setting === 'incubation'"
-        on-update="settings.update(setting, settingsList)">
+        on-update="settings.update(setting, settingsList, empty)">
     </settings-fields>
   </div>
   <md-input-container>
