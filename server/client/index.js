@@ -4,7 +4,9 @@
     var module = 'incubator';
 
 	function config($mdThemingProvider, $routeProvider) {
-		$mdThemingProvider.theme('default').primaryPalette('blue');
+		$mdThemingProvider.theme('default')
+			.primaryPalette('blue')
+			.warnPalette('red');
 		$mdThemingProvider.theme('on_off')
 	    	.primaryPalette('green')
 			.warnPalette('red');
