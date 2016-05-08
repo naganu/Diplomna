@@ -7,12 +7,12 @@
             onUpdate: "&",
 			onRemove: "&",
 			removeBtn: "<",
-			rotateField: "<"
+			rotateField: "<",
+			settings: "<"
         },
 		controller: function() {
 			var $ctrl = this;
 			$ctrl.all = ['period', 'interval', 'temperature', 'humidity'];
-			$ctrl.settings = {};
 		}
     });
 })()

@@ -3,6 +3,7 @@
     <settings-fields
         ng-repeat="setting in settings.all"
         name="{{setting}}"
+        settings="settings.program[setting]"
         rotate-field="setting === 'incubation'"
         on-update="settings.update(setting, settingsList, empty)">
     </settings-fields>

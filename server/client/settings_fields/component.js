@@ -6,16 +6,15 @@
         bindings: {
             name: "@",
             onUpdate: "&",
-			rotateField: "<"
+			rotateField: "<",
+			settings: "<"
         },
 		controller: function() {
 			var $ctrl = this;
-			$ctrl.settings = [];
 			$ctrl.empty = [];
 			$ctrl.update = update;
 			$ctrl.add = add;
 			$ctrl.remove = remove;
-			$ctrl.add();
 
 			function reflect() {
 				$ctrl.onUpdate({

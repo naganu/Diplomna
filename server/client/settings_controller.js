@@ -8,6 +8,13 @@
         settings.saveProgram = saveProgram;
         settings.update = update;
 		settings.empty = {};
+		for(var i = 0; i < settings.all.length; ++i) {
+			settings.program[settings.all[i]] = [{}];
+		}
+		settings.program[settings.all[0]][0] = {
+			period: 2,
+			interval: 3
+		};
 
 		function isEmpty() {
 			function all_true(arr) {
