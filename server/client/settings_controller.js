@@ -6,7 +6,7 @@
 		settings.all = ['incubation', 'hatching'];
 		settings.changeState =  changeState;
 		settings.doWithProgram = doWithProgram;
-        settings.update = update;
+		settings.update = update;
 		settings.empty = {};
 		onInit();
 
@@ -71,14 +71,14 @@
 			return  !(all_true(test) && settings.program.name);
 		}
 
-        function incubatorAction() {
+		function incubatorAction() {
 			if(isEmpty()) {
 				$mdDialog.show(
 					$mdDialog.alert()
 						.textContent("All fields are required!")
 						.ok("Okay")
 						.theme("on_off")
-				);
+					);
 			} else {
 				switch(settings.state) {
 					case "new":
@@ -89,7 +89,7 @@
 						break;
 				}
 			}
-        }
+		}
 
 		function saveProgram() {
 			$resource('/incubator/program').save({}, {program: settings.program}, function (response) {
@@ -97,10 +97,10 @@
 			});
 		}
 
-        function update(setting, settingsList, empty) {
-            settings.program[setting] = settingsList;
+		function update(setting, settingsList, empty) {
+			settings.program[setting] = settingsList;
 			settings.empty[setting] = empty;
-        }
+		}
 	}
 
     controller.$inject = ["$resource", "$mdDialog"];
