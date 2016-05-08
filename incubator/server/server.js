@@ -2,9 +2,13 @@ var ip = require('ip');
 var express = require('express');
 var makeRequest = require('request');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var server = express();
 var port = 3000;
 var routes = require('./routes/router');
+
+mongoose.connect('mongodb://localhost');
+mongoose.Promise = global.Promise;
 
 server.set('trust proxy', true);
 server.use(bodyParser.json());

@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	function controller($mdDialog) {
+	function controller($resource, $mdDialog) {
 		var settings = this;
 		settings.all = ['incubation', 'hatching'];
 		settings.changeState =  changeState;
@@ -12,17 +12,9 @@
 
 		function onInit() {
 			changeState('new');
-			settings.programs = [{
-				name: "test",
-				hatching: [{
-					period: 2,
-					temperature: 3
-				}],
-				incubation: [{
-					period: 2,
-					interval: 3
-				}]
-			}];
+			$resource('/incubator/program').get({}, {}, function (response) {
+				settings.programs = response.programs;
+			});
 		}
 
 		function changeState(state) {
@@ -34,6 +26,7 @@
 		}
 
 		function doWithProgram() {
+			settings.program = settings.programs[settings.choosen];
 			switch(settings.state) {
 				case "update":
 					updateProgram();
@@ -54,7 +47,6 @@
 		}
 
 		function updateProgram() {
-			settings.program = settings.programs[settings.choosen];
 			for(var i = 0; i < settings.all.length; ++i) {
 				settings.empty[settings.all[i]] = [true];
 			}
@@ -62,9 +54,10 @@
 		}
 
 		function removeProgram() {
-			settings.programs.splice(settings.choosen, 1);
-			changeState("new");
-
+			$resource('/incubator/program/:name').remove({name: settings.program.name}, {}, function (response) {
+				settings.programs.splice(settings.choosen, 1);
+				changeState("new");
+			});
 		}
 
 		function isEmpty() {
@@ -89,7 +82,7 @@
 			} else {
 				switch(settings.state) {
 					case "new":
-						newProgram();
+						saveProgram();
 						break;
 					case "edit":
 						editProgram();
@@ -98,13 +91,19 @@
 			}
         }
 
+		function saveProgram() {
+			$resource('/incubator/program').save({}, {program: settings.program}, function (response) {
+				settings.programs.push(settings.program);
+			});
+		}
+
         function update(setting, settingsList, empty) {
             settings.program[setting] = settingsList;
 			settings.empty[setting] = empty;
         }
 	}
 
-    controller.$inject = ["$mdDialog"];
+    controller.$inject = ["$resource", "$mdDialog"];
 
     angular.module('incubator').controller('settingsController', controller);
 
