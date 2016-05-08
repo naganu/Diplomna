@@ -1,16 +1,35 @@
 <div class="md-title" layout="column" layout-align="center center">
-  <div lyaout="column" layout-align="center center">
-    <settings-fields
-        ng-repeat="setting in settings.all"
-        name="{{setting}}"
-        settings="settings.program[setting]"
-        rotate-field="setting === 'incubation'"
-        on-update="settings.update(setting, settingsList, empty)">
-    </settings-fields>
-  </div>
-  <md-input-container>
-    <label>Program name</label>
-    <input ng-model="settings.program.name"></input>
-  </md-input-container>
-  <md-button class="md-primary md-raised" ng-click="settings.saveProgram()">Save</md-button>
+    <div layout="row" layout-align="center center">
+        <md-button ng-click="settings.changeState('new')" ng-class="settings.state === 'new' ? 'md-warn' : 'md-primary'">New</md-button>
+        <md-button ng-click="settings.changeState('update')" ng-class="settings.state === 'update' || settings.state === 'edit'  ? 'md-warn' : 'md-primary'">Update</md-button>
+        <md-button ng-click="settings.changeState('remove')" ng-class="settings.state === 'remove' ? 'md-warn' : 'md-primary'">Remove</md-button>
+    </div>
+    <div ng-if="settings.state === 'new' || settings.state === 'edit'" layout="column" layout-align="center center">
+        <settings-fields
+            ng-repeat="setting in settings.all"
+            name="{{setting}}"
+            settings="settings.program[setting]"
+            rotate-field="setting === 'incubation'"
+            on-update="settings.update(setting, settingsList, empty)">
+        </settings-fields>
+        <md-input-container>
+            <label>Program name</label>
+            <input ng-model="settings.program.name"></input>
+        </md-input-container>
+        <md-button
+            class="md-raised"
+            ng-class="settings.state === 'new' ? 'md-primary' : 'md-warn'"
+            ng-click="settings.doWithProgram()">
+            {{settings.state === "new" ? "Save" : "Update"}}
+        </md-button>
+    </div>
+    <div ng-if="settings.state === 'update' || settings.state === 'remove'" layout="row" layout-align="center center">
+        <md-input-container>
+            <label>Program name</label>
+            <md-select ng-model="settings.choosen">
+                <md-option ng-repeat="program in settings.programs" ng-value="$index">{{program.name}}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-button ng-click="settings.doWithProgram()" class="md-warn md-raised" ng-disabled="settings.choosen === -1;">{{settings.state}}</md-button>
+    </div>
 </div>

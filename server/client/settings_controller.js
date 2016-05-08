@@ -4,17 +4,68 @@
 	function controller($mdDialog) {
 		var settings = this;
 		settings.all = ['incubation', 'hatching'];
-        settings.program = {};
-        settings.saveProgram = saveProgram;
+		settings.changeState =  changeState;
+		settings.doWithProgram = doWithProgram;
         settings.update = update;
 		settings.empty = {};
-		for(var i = 0; i < settings.all.length; ++i) {
-			settings.program[settings.all[i]] = [{}];
+		onInit();
+
+		function onInit() {
+			changeState('new');
+			settings.programs = [{
+				name: "test",
+				hatching: [{
+					period: 2,
+					temperature: 3
+				}],
+				incubation: [{
+					period: 2,
+					interval: 3
+				}]
+			}];
 		}
-		settings.program[settings.all[0]][0] = {
-			period: 2,
-			interval: 3
-		};
+
+		function changeState(state) {
+			settings.state = state;
+			settings.choosen = -1;
+			if(state === 'new') {
+				newProgram();
+			}
+		}
+
+		function doWithProgram() {
+			switch(settings.state) {
+				case "update":
+					updateProgram();
+					break;
+				case "remove":
+					removeProgram();
+					break;
+				default: incubatorAction();
+			}
+		}
+
+		function newProgram() {
+			delete settings.program;
+			settings.program = {};
+			for(var i = 0; i < settings.all.length; ++i) {
+				settings.program[settings.all[i]] = [{}];
+			}
+		}
+
+		function updateProgram() {
+			settings.program = settings.programs[settings.choosen];
+			for(var i = 0; i < settings.all.length; ++i) {
+				settings.empty[settings.all[i]] = [true];
+			}
+			changeState('edit');
+		}
+
+		function removeProgram() {
+			settings.programs.splice(settings.choosen, 1);
+			changeState("new");
+
+		}
 
 		function isEmpty() {
 			function all_true(arr) {
@@ -27,7 +78,7 @@
 			return  !(all_true(test) && settings.program.name);
 		}
 
-        function saveProgram() {
+        function incubatorAction() {
 			if(isEmpty()) {
 				$mdDialog.show(
 					$mdDialog.alert()
@@ -36,7 +87,14 @@
 						.theme("on_off")
 				);
 			} else {
-				console.log(settings.program);
+				switch(settings.state) {
+					case "new":
+						newProgram();
+						break;
+					case "edit":
+						editProgram();
+						break;
+				}
 			}
         }
 
