@@ -23,7 +23,12 @@ server.get('/connect/:incubator', connection);
 server.post('/connect', connect);
 server.use('/incubator', incubator, redirect);
 server.use(error);
-server.listen(port);
+
+connected.remove({}, function(err) {
+    if(!err) {
+        server.listen(port);
+    }
+});
 
 function getIp (request, response, next) {
     request.reqIp = ip.getClientIp(request);
@@ -32,10 +37,14 @@ function getIp (request, response, next) {
 
 function connection(request, response, next) {
     connected.findOne(request.params).exec().then(function (inc) {
-        incubators.create({user: request.reqIp, host: inc.host}).then(function (doc) {
-            response.send({success: true});
-        }, next);
-    }, next);  
+        if(inc) {
+            incubators.create({user: request.reqIp, host: inc.host}).then(function (doc) {
+                response.send({success: true});
+            }, next);
+        } else {
+            response.send({success: false});
+        }
+    }, next);
 }
 
 function connect(request, response, next) {
@@ -59,7 +68,7 @@ function redirect(request, response) {
     makeRequest({
       uri: "http://" + request.incubator + request.url,
       method: request.method,
-      json: request.body 
+      json: request.body
     }, function (error, res, body) {
         response.send(body);
     });
