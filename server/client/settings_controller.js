@@ -26,7 +26,6 @@
 		}
 
 		function doWithProgram() {
-			settings.program = settings.programs[settings.choosen];
 			switch(settings.state) {
 				case "update":
 					updateProgram();
@@ -39,7 +38,6 @@
 		}
 
 		function newProgram() {
-			delete settings.program;
 			settings.program = {};
 			for(var i = 0; i < settings.all.length; ++i) {
 				settings.program[settings.all[i]] = [{}];
@@ -47,14 +45,16 @@
 		}
 
 		function updateProgram() {
+			settings.program = settings.programs[settings.choosen];
 			for(var i = 0; i < settings.all.length; ++i) {
 				settings.empty[settings.all[i]] = [true];
 			}
-			changeState('edit');
+			settings.state = 'edit';
 		}
 
 		function removeProgram() {
-			$resource('/incubator/program/:name').remove({name: settings.program.name}, {}, function (response) {
+			var name = settings.programs[settings.choosen].name;
+			$resource('/incubator/program/:name').remove({name: name}, {}, function (response) {
 				settings.programs.splice(settings.choosen, 1);
 				changeState("new");
 			});
@@ -78,7 +78,7 @@
 						.textContent("All fields are required!")
 						.ok("Okay")
 						.theme("on_off")
-					);
+				);
 			} else {
 				switch(settings.state) {
 					case "new":
@@ -93,7 +93,31 @@
 
 		function saveProgram() {
 			$resource('/incubator/program').save({}, {program: settings.program}, function (response) {
-				settings.programs.push(settings.program);
+				var message;
+				if(response.success) {
+					settings.programs.push(settings.program);
+					message = "Program saved!";
+				} else {
+					message = "Error while saving! (probably a progaram with the same name already exists in your collection)";
+				}
+				$mdDialog.show(
+					$mdDialog.alert()
+						.textContent(message)
+						.ok("Okay")
+						.theme("on_off")
+				);
+			});
+		}
+
+		function editProgram() {
+			var id = settings.programs[settings.choosen]._id;
+			$resource('/incubator/program/:id').save({id: id}, {program: settings.program}, function (response) {
+				$mdDialog.show(
+					$mdDialog.alert()
+						.textContent(response.success ? "program updated!" : "Error while updating! (probably a progaram with the same name already exists in your collection)")
+						.ok("Okay")
+						.theme("on_off")
+				);
 			});
 		}
 

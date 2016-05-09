@@ -10,16 +10,19 @@ router.route("/program")
 })
 .post(function(request, response, next) {
     model.create(request.body.program).then(function(program) {
-        response.send(program);
+        response.send({success: true});
     }, next);
 });
 
-router.route("/program/:name")
-.post(function(request, response, next) {
+router.post("/program/:id", function(request, response, next) {
+    model.findByIdAndUpdate({_id: request.params.id}, request.body.program)
+        .exec().then(function(program) {
+            response.send({success: true});
+    }, next);
+});
 
-})
-.delete(function(request, response, next) {
-    model.remove(request.body).exec().then(function() {
+router.delete("/program/:name", function(request, response, next) {
+    model.remove({name: request.params.name}).exec().then(function() {
         response.send({});
     }, next);
 });
