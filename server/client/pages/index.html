@@ -5,12 +5,19 @@
 	</head>
 	<body>
 		<div ng-controller="indexController" layout="column" layout-align="center center" layout-wrap>
+			<md-input-container>
+				<label translate="language"></label>
+				<md-select ng-model="language" ng-change="chooseLanguage(language)">
+					<md-option translate="bulgarian" ng-value="'bg'"></md-option>
+					<md-option translate="english" ng-value="'en'"></md-option>
+				</md-select>
+			</md-input-container>
 			<div ng-hide="host" layout="column" layout-align="center center" layout-wrap>
 				<md-input-container>
-					<label>Incubator</label>
+					<label translate="incubator-connect"></label>
 				 	<input ng-model="incubator" required>
 				</md-input-container>
-				<md-button class="md-primary" ng-click="connect()">Connect</md-button>
+				<md-button class="md-primary" ng-click="connect()" translate="connect"></md-button>
 			</div>
 			<div ng-show="host" layout="column" layout-align="center center" layout-wrap layout-margin layout-padding>
                 <div ng-controller="navigationController as navigate">
@@ -18,7 +25,8 @@
                     	ng-repeat="button in ['home', 'test', 'settings']"
                     	ng-class="navigate.button === $index ? 'md-raised' : ''"
                     	class="md-primary"
-                    	ng-href="#/{{button}}">{{button}}</md-button>
+						translate="{{button}}"
+                    	ng-href="#/{{button}}"></md-button>
                 </div>
 				<div ng-view></div>
             </div>
@@ -30,6 +38,7 @@
 		<script src="angular-animate/angular-animate.js"></script>
 		<script src="angular-resource/angular-resource.js"></script>
 		<script src="angular-route/angular-route.js"></script>
+		<script src="angular-translate/dist/angular-translate.js"></script>
 		<script src="index.js"></script>
         <script src="indexController.js"></script>
 		<script src="incubator_controller.js"></script>

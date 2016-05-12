@@ -1,8 +1,11 @@
 (function () {
     'use strict';
 
-    function controller($scope, $resource, $mdDialog) {
+    function controller($scope, $resource, $mdDialog, $translate) {
         $scope.connect = connect;
+        $scope.language = "bg";
+        $scope.chooseLanguage = chooseLanguage;
+        $scope.chooseLanguage($scope.language);
 
         function connect() {
             $resource('/connect/:incubator').get({incubator: $scope.incubator}, function (response) {
@@ -18,9 +21,13 @@
                 }
             });
         }
+
+        function chooseLanguage(language) {
+            $translate.use(language);
+        }
     }
 
-    controller.$inject = ['$scope', '$resource', '$mdDialog'];
+    controller.$inject = ['$scope', '$resource', '$mdDialog', '$translate'];
 
     angular.module('incubator').controller('indexController', controller);
 })()

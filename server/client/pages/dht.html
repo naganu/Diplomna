@@ -1,22 +1,22 @@
 <div class="md-title" layout="column" layout-align="center center">
   <div layout="row">
     <md-input-container>
-      <label>Program</label>
+      <label translate="program"></label>
       <md-select ng-model="dht.program">
         <md-option ng-repeat="option in dht.programOptions">{{option}}</md-option>
       </md-select>
     </md-input-container>
-    <md-button md-theme="on_off" class="md-primary" ng-click="dht.startProgram()">Start</md-button>
+    <md-button md-theme="on_off" class="md-primary" ng-click="dht.startProgram()" translate="start"></md-button>
   </div>
   <div flex="auto" lyaout="column" layout-align="center center">
   		<div layout="row" layout-align="center center" flex="auto" layout-padding>
-  			<span flex="70"> Current temperature </span>
+  			<span flex="70" translate="current temperature"></span>
   			<span flex="30">
   				<md-button class="md-primary md-raised">{{dht.sensor.temp}}</md-button>
-  			</span>	
+  			</span>
   		</div>
   		<div layout="row" layout-align="center center" flex="auto" layout-padding>
-  			<span flex="70"> Current humidity </span>
+  			<span flex="70" translate="current humidity"></span>
   			<span flex="30">
   				<md-button class="md-primary md-raised">{{dht.sensor.humi}}</md-button>
   			</span>
@@ -25,9 +25,9 @@
   <div layout="row">
     <md-button
       ng-class="dht.programStoped ? 'md-primary' : 'md-warn'"
-      ng-click="dht.programStoped ? dht.stopProgram() : dht.resumeProgram()" >
-      {{dht.programStoped ? "Resume" : "Stop"}}
+      ng-click="dht.programStoped ? dht.stopProgram() : dht.resumeProgram()"
+      translate="{{dht.programStoped ? 'resume' : 'stop'}}">
     </md-button>
-    <md-button class="md-warn">End</md-button>
+    <md-button class="md-warn" translate="end"></md-button>
   </div>
-</div>	
+</div>

@@ -1,5 +1,5 @@
-<div layout="column" layout-align="center center" md-theme="on_off">
-    <md-subheader>{{$ctrl.name}}</md-subheader>
+<div layout="column" layout-align="center center" md-theme="on_off" layout-padding >
+    <h class="md-title">{{$ctrl.name}}</h>
     <div layout="column">
         <settings-field
             ng-repeat="setting in $ctrl.settings"
@@ -10,5 +10,5 @@
             on-remove="$ctrl.remove($index)">
         </settings-field>
     </div>
-    <md-button class="md-primary md-raised" ng-click="$ctrl.add()">Add</md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.add()"translate="add"></md-button>
 </div>

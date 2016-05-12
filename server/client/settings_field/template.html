@@ -1,8 +1,8 @@
 <div layout="column" layout-align="center center">
-    <div layout="row" md-theme="default" layout-align="center center">
+    <div ng-repeat="i in [0, 1]" layout="row" md-theme="default" layout-align="center center">
         <md-input-container
             ng-repeat="setting in $ctrl.all"
-            ng-if="setting !== $ctrl.all[1] || $ctrl.rotateField">
+            ng-if="(($index >= i * 2) && ($index <= i * 2 + 1)) && (setting !== $ctrl.all[1] || $ctrl.rotateField)">
             <label>{{setting}}</label>
             <input
                 ng-model="$ctrl.settings[setting]"
