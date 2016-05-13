@@ -39,7 +39,7 @@ And this in second one:
 ```bash
 cd ./incubator
 npm install
-npm start
+npm run local
 ```
 
 You should see message: OK in second terminal window if there are no errors.
@@ -48,7 +48,7 @@ Now open browser and navigate to 127.0.0.1:4000
 
 You should see a field asking to for Incubator id.
 
-Enter: bobi, in it and you should see the app UI.
+Enter: "id-incubator", in it and you should see the app UI.
 
 
 
