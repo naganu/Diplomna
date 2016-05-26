@@ -48,7 +48,24 @@
 			"program name": "Program name",
 			"save": "SAVE",
 			"add": "ADD",
-			"Internal ventilator": "Internal ventilator"
+			"on": "ON",
+			"off": "OFF",
+			"Internal ventilator": "Internal ventilator",
+			"External ventilator": "External ventilator",
+			"Heater": "Heater",
+			"Led light": "Led light",
+			"Motor - rotation": "Motor - rotation",
+			"Peristaltic pump": "Peristaltic pump",
+			"Buzzer": "Buzzer",
+			"Hall sensor": "Hall sensor",
+			"low": "LOW",
+			"high": "HIGH",
+			"incubation": "incubation",
+			"hatching": "hatching",
+			"temperature": "temperature",
+			"humidity": "humidity",
+			"period": "period",
+			"interval": "interval - rotation"
 		});
 
     	$translateProvider.translations("bg", {
@@ -73,8 +90,24 @@
 			"program name": "Програма",
 			"save": "ЗАПАЗИ",
 			"add": "ДОБАВИ",
-			"Internal ventilator": "Вентилатор за охлаждане"
-
+			"on": "вкл",
+			"off": "изкл",
+			"Internal ventilator": "Вентилатор",
+			"External ventilator": "Вентилатор за охлаждане",
+			"Heater": "Нагревател",
+			"Led light": "Осветление",
+			"Motor - rotation": "Двигател",
+			"Peristaltic pump": "Перисталтична помпа",
+			"Buzzer": "Пищялка",
+			"Hall sensor": "Сензор на Хол",
+			"low": "LOW",
+			"high": "HIGH",
+			"incubation": "инкубиране",
+			"hatching": "люпене",
+			"temperature": "температура",
+			"humidity": "влажност",
+			"period": "продължителност",
+			"interval": "интервал на обръщане"
 		});
 
 		$translateProvider.use("en");

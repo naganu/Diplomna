@@ -3,7 +3,7 @@
         <md-input-container
             ng-repeat="setting in $ctrl.all"
             ng-if="(($index >= i * 2) && ($index <= i * 2 + 1)) && (setting !== $ctrl.all[1] || $ctrl.rotateField)">
-            <label>{{setting}}</label>
+            <label translate="{{setting}}"></label>
             <input
                 ng-model="$ctrl.settings[setting]"
                 type="number"
