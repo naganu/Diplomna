@@ -25,7 +25,7 @@
 				dht.sensor.temp = response.temp;
 				dht.sensor.humi = response.humi;
 			})
-		}, 2000);
+		}, 5000);
 	}
 
     controller.$inject = ['$resource', '$interval'];

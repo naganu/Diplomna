@@ -7,48 +7,48 @@
         incubator.buttons = [
             {
                 message: 'Internal ventilator',
-                url: '/int_vent' 
+                url: '/int_vent'
             },
             {
                 message: 'External ventilator',
-                url: '/ext_vent' 
+                url: '/ext_vent'
             },
             {
                 message: 'Heater',
-                url: '/heater' 
+                url: '/heater'
             },
             {
                 message: 'Led light',
-                url: '/led_light' 
+                url: '/led_light'
             },
             {
                 message: 'Motor - rotation',
-                url: '/mot_rot' 
+                url: '/mot_rot'
             },
             {
                 message: 'Peristaltic pump',
-                url: '/per_pump' 
+                url: '/per_pump'
             },
             {
                 message: 'Buzzer',
-                url: '/buzzer' 
+                url: '/buzzer'
             }
         ];
 
         incubator.hall = {
             message: 'Hall sensor',
             url: '/hall',
-            value: false 
+            value: false
         }
 
         $interval(function() {
             $resource(incubator.hall.url).save({}, {}, function (response) {
                 incubator.hall.value = response.state;
             });
-        }, 200);
+        }, 2000);
     }
-    
+
     controller.$inject = ['$resource', '$interval'];
-    
+
     angular.module('incubator').controller('incubatorController', controller);
 })()

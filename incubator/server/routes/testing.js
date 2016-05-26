@@ -4,12 +4,12 @@ var wpi = require('wiring-pi');
 
 var outputs = [
 	{
-		pin: 2,
-		url: '/int_vent' 
+		pin: 1,
+		url: '/int_vent'
 	},
 	{
-		pin: 1,
-		url: '/ext_vent' 
+		pin: 2,
+		url: '/ext_vent'
 	},
 	{
 		pin: 3,
@@ -17,7 +17,7 @@ var outputs = [
 	},
 	{
 		pin: 4,
-		url: '/led_light' 
+		url: '/led_light'
 	},
 	{
 		pin: 21,
@@ -36,7 +36,7 @@ var outputs = [
 var inputs = [
 	{
 		pin: 23,
-		url: '/hall' 
+		url: '/hall'
 	}
 ];
 
@@ -53,7 +53,7 @@ function output(pin) {
 	}
 }
 
-for(var i = 0;i < outputs.length; ++i) 
+for(var i = 0;i < outputs.length; ++i)
 	router.post(outputs[i].url, output(outputs[i].pin));
 
 function input(pin) {

@@ -106,7 +106,7 @@ st_am2321 __st_am2321( unsigned char* data ) {
 
 //Removed void am2321_dump( st_am2321 measured )
 
-// Removed all data extraction functions 
+// Removed all data extraction functions
 
 typedef struct {
         short integer;
@@ -189,8 +189,8 @@ st_am2321 am2321() {
     measured = am2321();
 
     if(!_error) {
-      number temp = am2321_data(measured, 0);
-      number humi = am2321_data(measured, 1);
+      number temp = am2321_data(measured, 1);
+      number humi = am2321_data(measured, 0);
       last_read::tempInt = temp.integer;
       last_read::tempFrac = temp.fraction;
       last_read::humiInt = humi.integer;
