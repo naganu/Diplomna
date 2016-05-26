@@ -4,6 +4,7 @@ var router = express.Router();
 
 router.get("/sensor", function(request, response, next) {
 	read_sensor().then(function send(data) {
+		console.log(data);
 		response.send(data);
 	}, next);
 });
