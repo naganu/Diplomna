@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dht": "cd server/routes/dht && node-gyp configure build",
-    "start": "sudo node server/server.js id-incubator 192.168.0.103:4000",
+    "start": "sudo node server/server.js id-incubator incubator-63925.onmodulus.net",
     "local": "sudo node server/server.js id-incubator 127.0.0.1:4000"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naganu/Diplomna.git"
+    "url": "https://github.com/naganu/Diplomna.git"
   },
   "author": "",
   "license": "ISC",
