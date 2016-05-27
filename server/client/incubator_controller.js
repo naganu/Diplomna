@@ -41,11 +41,11 @@
             value: false
         }
 
-        $interval(function() {
+        /*$interval(function() {
             $resource(incubator.hall.url).save({}, {}, function (response) {
                 incubator.hall.value = response.state;
             });
-        }, 2000);
+        }, 2000);*/
     }
 
     controller.$inject = ['$resource', '$interval'];

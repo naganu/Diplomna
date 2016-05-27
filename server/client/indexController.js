@@ -2,12 +2,13 @@
     'use strict';
 
     function controller($scope, $resource, $mdDialog, $translate) {
-        $scope.connect = connect;
         $scope.language = "bg";
         $scope.chooseLanguage = chooseLanguage;
         $scope.chooseLanguage($scope.language);
+        //$scope.connect = connect;
+        $scope.host = true;
 
-        function connect() {
+        /*function connect() {
             $resource('/connect/:incubator').get({incubator: $scope.incubator}, function (response) {
                 if(response.success) {
                     $scope.host = true;
@@ -20,7 +21,7 @@
     				);
                 }
             });
-        }
+        }*/
 
         function chooseLanguage(language) {
             $translate.use(language);

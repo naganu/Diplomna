@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "raspberry pi based incubator",
   "main": "server.js",
+  "engines" : {
+    "node": "6.0.0"
+  },
   "scripts": {
     "test": "bobi",
     "start": "node server.js"

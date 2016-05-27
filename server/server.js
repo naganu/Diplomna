@@ -11,7 +11,7 @@ var errorPage = path.join(clientDir, 'pages/error.html');
 var connected = require('./models/connected');
 var incubators = require('./models/incubators');
 
-mongoose.connect('mongodb://localhost');
+mongoose.connect('');
 mongoose.Promise = global.Promise;
 
 server.set('trust proxy', true);
@@ -26,7 +26,11 @@ server.use(error);
 
 connected.remove({}, function(err) {
     if(!err) {
-        server.listen(port);
+        server.listen(port, function(error) {
+            console.log(port, error);
+        });
+    } else {
+        console.log(err);
     }
 });
 
