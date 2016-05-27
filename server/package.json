@@ -2,7 +2,7 @@
   "name": "icubator",
   "version": "1.0.0",
   "description": "raspberry pi based incubator",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "bobi",
     "start": "node server.js"
