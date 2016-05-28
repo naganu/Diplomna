@@ -6,7 +6,8 @@
   "scripts": {
     "dht": "cd server/routes/dht && node-gyp configure build",
     "start": "sudo node server/server.js id-incubator incubator-63925.onmodulus.net",
-    "local": "sudo node server/server.js id-incubator 127.0.0.1:4000"
+    "local-ip": "sudo node server/server.js id-incubator 192.168.0.103:8080",
+    "local": "sudo node server/server.js id-incubator 127.0.0.1:8080"
   },
   "repository": {
     "type": "git",

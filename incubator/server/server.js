@@ -19,5 +19,5 @@ server.listen(port);
 makeRequest({
     uri: `http://${process.argv[3]}/connect`,
     method: "POST",
-    json: {incubator: process.argv[2], host: `${ip.address()}:${port}`}
+    json: {incubator: process.argv[2]}
 }, function (error, res, body) { console.log(res.statusMessage); });
