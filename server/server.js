@@ -48,21 +48,11 @@ function connection(request, response, next) {
 }
 
 function connect(request, response, next) {
-    var peer = request.connection._peername;
-
-    console.log("remoteAdd", request.connection.remoteAddress)
-    console.log("remotePort", request.connection.remotePort)
-    console.log("local", request.connection.localAddress)
-    console.log("peer", peer);
-    response.send({success: true});
-    /*var incubator = request.body;
-    incubator.host = request.connection.remoteAddress + ":" + request.connection.remotePort;
-    //var address = request.connection.address()
-    //incubator.host = address.address + ":" + address.port;
-    console.log(incubator, request);
+    var incubator = {incubator: request.body.incubator};
+    incubator.host = request.reqIp.replace("\:\:ffff\:", "") + ":" + request.body.port;
     connected.create(incubator).then(function (doc) {
         response.send({success: true});
-    }, next);*/
+    }, next);
 }
 
 function error(request, response) {
@@ -82,6 +72,7 @@ function redirect(request, response) {
       method: request.method,
       json: request.body
     }, function (error, res, body) {
+        console.log(error);
         response.send(body);
     });
 }
