@@ -37,7 +37,7 @@
 
         incubator.hall = {
             message: 'Hall sensor',
-            url: '/hall',
+            url: '/incubator/hall',
             value: false
         }
 
@@ -45,7 +45,7 @@
             $resource(incubator.hall.url).save({}, {}, function (response) {
                 incubator.hall.value = response.state;
             });
-        }, 2000);
+        }, 5000);
     }
 
     controller.$inject = ['$resource', '$interval'];
