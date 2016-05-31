@@ -4,13 +4,13 @@
 	function controller($resource, $interval) {
 		var dht = this;
 		dht.sensor = {temp: 0.0, humi: 0.0};
-		dht.programOptions = ["p1", "p2", "p3"];
+		dht.programOptions = [];
 		dht.programStoped = false;
         dht.program = {};
 
-		dht.startProgram = function() {
-
-		};
+		$resource('/incubator/program').get({}, {}, function (response) {
+			dht.programOptions = response.programs;
+		});
 
 		dht.stopProgram = function() {
 			dht.programStoped = false;
@@ -20,12 +20,15 @@
 			dht.programStoped = true;
 		};
 
-		$interval(function() {
+		function get_dht() {
 			$resource('/incubator/sensor').get({}, {}, function (response) {
 				dht.sensor.temp = response.temp;
 				dht.sensor.humi = response.humi;
 			})
-		}, 5000);
+		}
+
+		get_dht()
+		$interval(get_dht, 5000);
 	}
 
     controller.$inject = ['$resource', '$interval'];

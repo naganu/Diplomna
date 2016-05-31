@@ -72,7 +72,6 @@ function redirect(request, response) {
       method: request.method,
       json: request.body
     }, function (error, res, body) {
-        console.log(error);
         response.send(body);
     });
 }

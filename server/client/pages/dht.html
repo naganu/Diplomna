@@ -3,7 +3,7 @@
     <md-input-container>
       <label translate="program"></label>
       <md-select ng-model="dht.program">
-        <md-option ng-repeat="option in dht.programOptions">{{option}}</md-option>
+        <md-option ng-repeat="option in dht.programOptions">{{option.name}}</md-option>
       </md-select>
     </md-input-container>
     <md-button md-theme="on_off" class="md-primary" ng-click="dht.startProgram()" translate="start"></md-button>
