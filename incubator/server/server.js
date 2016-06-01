@@ -3,6 +3,7 @@ var express = require('express');
 var makeRequest = require('request');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var spawn = require('child_process').spawn
 var server = express();
 var port = 3000;
 var routes = require('./routes/router');
@@ -20,4 +21,8 @@ makeRequest({
     uri: `http://${process.argv[3]}/connect`,
     method: "POST",
     json: {incubator: process.argv[2], port: port}
-}, function (error, res, body) { console.log(res.statusMessage); });
+}, function (error, res, body) {
+    if(!error) {
+        spawn("chromium-browser", [process.argv[3]]);
+    }
+});
