@@ -50,6 +50,7 @@ function connection(request, response, next) {
 function connect(request, response, next) {
     var incubator = {incubator: request.body.incubator};
     incubator.host = request.reqIp.replace("\:\:ffff\:", "") + ":" + request.body.port;
+    console.log(incubator)
     connected.create(incubator).then(function (doc) {
         response.send({success: true});
     }, next);
