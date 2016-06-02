@@ -15,6 +15,7 @@ mongoose.Promise = global.Promise;
 server.set('trust proxy', true);
 server.use(bodyParser.json());
 server.use(routes);
+server.listen(port);
 
 electron.app.on('ready', function() {
     var baseURL = 'http://' + process.argv[3];
@@ -29,19 +30,14 @@ electron.app.on('ready', function() {
         if(!error) {
             mainWindow = new electron.BrowserWindow({
                 frame: false,
-                fullscreen: true,
-                center: true
-            });
+                fullscreen: true
+            })
             mainWindow.loadURL(baseURL)
             mainWindow.on('closed', function() {
-                mainWindow = null;
-            });
+                mainWindow = null
+            })
         }
     });
 })
 
-electron.app.on('window-all-closed', function () {
-    electron.app.quit();
-});
-
-server.listen(port);
+electron.app.on('window-all-closed', electron.app.quit)
