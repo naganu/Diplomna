@@ -21,7 +21,10 @@ electron.app.on('ready', function() {
     makeRequest({
         uri: baseURL + '/connect',
         method: "POST",
-        json: {incubator: process.argv[2], port: port}
+        json: {
+            incubator: process.argv[2],
+            port: port
+        }
     }, function (error, res, body) {
         if(!error) {
             mainWindow = new electron.BrowserWindow({
