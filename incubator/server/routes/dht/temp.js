@@ -9,4 +9,4 @@ var pid = new PIDController(0.3, 0.3, 0.3, 3, function() {
         });
     })
 });
-pid.restart(28.9, 10);
+pid.run(28.9, 10);
