@@ -6,7 +6,9 @@ wpi.pinMode(hall, wpi.INPUT);
 wpi.pinMode(motor, wpi.OUTPUT);
 wpi.pullUpDnControl(hall, wpi.PUD_UP);
 wpi.digitalWrite(motor, wpi.HIGH);
-wpi.wiringPiISR(hall, wpi.INT_EDGE_FALLING, function(delta) {
-    wpi.digitalWrite(motor, wpi.LOW);
-    wpi.wiringPiISRCancel(hall);
-});
+setTimeout(function() {
+    wpi.wiringPiISR(hall, wpi.INT_EDGE_FALLING, function(delta) {
+        wpi.digitalWrite(motor, wpi.LOW);
+        wpi.wiringPiISRCancel(hall);
+    });
+}, 3000);
