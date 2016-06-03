@@ -34,9 +34,6 @@ using v8::String;
  * Removed udelay function
  */
 
-
-int sys_set = wiringPiSetup();
-
 bool _error = false;
 
 namespace last_read {

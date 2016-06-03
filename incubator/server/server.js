@@ -4,6 +4,8 @@ var makeRequest = require('request');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var electron = require('electron');
+var wpi = require('wiring-pi');
+wpi.wiringPiSetup();
 var server = express();
 var port = 3000;
 var routes = require('./routes/router');

@@ -40,8 +40,6 @@ var inputs = [
 	}
 ];
 
-wpi.wiringPiSetup();
-
 function output(pin) {
 	wpi.pinMode(pin, wpi.OUTPUT);
 	return function (request, response) {
