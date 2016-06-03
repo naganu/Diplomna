@@ -7,10 +7,15 @@ module.exports = function(speed, period, pin) {
         this.stop();
         if(!wpi.softPwmCreate(pin, 0, 100)) {
             var state = false;
-            this.interval = setInterval(function() {
-                state = !state;
-                wpi.softPwmWrite(pin, state ? speed : 0);
-            }, 60000 * period);
+            if(!perriod) {
+                wpi.softPwmWrite(pin, speed);
+                this.interval = true;
+            } else {
+                this.interval = setInterval(function() {
+                    state = !state;
+                    wpi.softPwmWrite(pin, state ? speed : 0);
+                }, 60000 * period);
+            }
         }
     }
 
