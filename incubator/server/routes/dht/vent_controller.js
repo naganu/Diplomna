@@ -7,7 +7,7 @@ module.exports = function(speed, period, pin) {
         this.stop();
         if(!wpi.softPwmCreate(pin, 0, 100)) {
             var state = false;
-            if(!perriod) {
+            if(!period) {
                 wpi.softPwmWrite(pin, speed);
                 this.interval = true;
             } else {
