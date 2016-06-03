@@ -3,29 +3,29 @@ var PIDController = require('node-pid-controller');
 var range = 100;
 
 module.exports = function(p, i, d, pin, sensor) {
-    if(!wpi.softPwmCreate(pin, 0, range)) {
-        this.p = p;
-        this.i = i;
-        this.d = d;
-        this.pin = pin;
-        this.pid = new PIDController({
-            k_p: p,
-            k_i: i,
-            k_d: d,
-            dt: period,
-            i_max: range
-        });
-        this.sensor = sensor;
-        this.target = 0;
-        this.period = 0;
-        this.interval = null;
+    this.p = p;
+    this.i = i;
+    this.d = d;
+    this.pin = pin;
+    this.sensor = sensor;
+    this.target = 0;
+    this.period = 0;
+    this.interval = null;
 
-        this.setTarget = function(target) {
-            this.target = target;
-        }
+    this.setTarget = function(target) {
+        this.target = target;
+    }
 
-        this.start = function(period) {
-            this.stop();
+    this.start = function(period) {
+        this.stop();
+        if(!wpi.softPwmCreate(pin, 0, range)) {
+            this.pid = new PIDController({
+                k_p: p,
+                k_i: i,
+                k_d: d,
+                dt: period,
+                i_max: range
+            });
             this.interval = setInterval(function() {
                 this.sensor().then(function(data) {
                     console.log(data);
@@ -35,17 +35,18 @@ module.exports = function(p, i, d, pin, sensor) {
                 });
             }, 1000 * period);
         }
+    }
 
-        this.stop = function() {
-            if(this.interval) {
-                clearInterval(this.interval);
-                this.interval = null;
-            }
+    this.stop = function() {
+        if(this.interval) {
+            wpi.softPwmStop(this.pin);
+            clearInterval(this.interval);
+            this.interval = null;
         }
-        
-        this.restart = function(target, period) {
-            this.setTarget(target);
-            this.start(period);
-        }
+    }
+
+    this.restart = function(target, period) {
+        this.setTarget(target);
+        this.start(period);
     }
 }
