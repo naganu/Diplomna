@@ -18,10 +18,10 @@ module.exports = function(p, i, d, pin, sensor) {
             pid.setTarget(target);
             this.interval = setInterval(function() {
                 sensor().then(function(data) {
-                    console.log(data);
                     var correction = pid.update(data);
-                    console.log(correction);
-                    wpi.softPwmWrite(pin, correction);
+                    console.log("data", data);
+                    console.log(correction, "%");
+                    wpi.softPwmWrite(pin, correction > 0 ? correction : 0);
                 });
             }, 1000 * period);
         }
