@@ -20,13 +20,18 @@
                     target: tuning.targetTemp,
                     period: tuning.period
                 }
-            }, function (response) {}
+            }, function (response) {
+
+            })
         };
 
         function get() {
             $resource('/incubator/tuning').get({}, {}, function(response) {
-                tuning.measeredTemp = response.temp.data;
-                tuning.correction = response.temp.correction;
+                if(response.temp) {
+                    tuning.measeredTemp = response.temp.data;
+                    tuning.correction = response.temp.correction;
+                }
+                console.log(response);
             });
         }
 
