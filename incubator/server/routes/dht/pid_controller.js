@@ -5,7 +5,7 @@ var range = 100;
 module.exports = function(p, i, d, pin, sensor) {
     this.interval = null;
 
-    this.run = function(target, period) {
+    this.run = function(target, period, onTarget) {
         this.stop();
         if(!wpi.softPwmCreate(pin, 0, range)) {
             var pid = new PIDController({
@@ -20,7 +20,14 @@ module.exports = function(p, i, d, pin, sensor) {
                 sensor().then(function(data) {
                     var correction = pid.update(data);
                     console.log(data + ' ' + correction);
-                    wpi.softPwmWrite(pin, correction > 0 ? correction : 0);
+                    if(correction > 1) {
+                        wpi.softPwmWrite(pin, correction);
+                    } else {
+                        if(typeof onTarget === 'function') {
+                            onTarget();
+                        }
+                        wpi.softPwmWrite(pin, 0);
+                    }
                 });
             }, 1000 * period);
         }
