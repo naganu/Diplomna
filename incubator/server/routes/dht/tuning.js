@@ -6,7 +6,10 @@ router.route('/tuning')
 .get(function(request, response, next) {
     response.send({temp: {
         data: temp.data,
-        correction: temp.correction
+        correction: temp.correction,
+        p: temp.p,
+        i: temp.i,
+        d: temp.d
     }});
 })
 .post(function(request, response, next) {

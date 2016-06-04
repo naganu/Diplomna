@@ -1,5 +1,5 @@
 var wpi = require('wiring-pi');
-var PIDController = require('node-pid-controller');
+var PIDController = require('./pid');
 var range = 100;
 
 module.exports = function(pin, sensor) {
@@ -7,6 +7,9 @@ module.exports = function(pin, sensor) {
     ctrl.interval = null;
     ctrl.data = 0;
     ctrl.correction = 0;
+    ctrl.p = 0;
+    ctrl.i = 0;
+    ctrl.d = 0;
 
     this.run = function(p, i, d, target, period, onTarget) {
         ctrl.stop();
@@ -23,6 +26,9 @@ module.exports = function(pin, sensor) {
                 sensor().then(function(data) {
                     ctrl.data = data;
                     ctrl.correction = pid.update(data);
+                    ctrl.p = pid.p;
+                    ctrl.i = pid.i;
+                    ctrl.d = pid.d;
                     if(ctrl.correction > 1) {
                         wpi.softPwmWrite(pin, ctrl.correction);
                     } else {
