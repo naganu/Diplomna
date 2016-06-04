@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	function controller($resource, $interval) {
+	function controller($resource, $interval, $scope) {
 		var dht = this;
 		dht.sensor = {temp: 0.0, humi: 0.0};
 		dht.programOptions = [];
@@ -28,10 +28,13 @@
 		}
 
 		get_dht()
-		$interval(get_dht, 5000);
+		var interval = $interval(get_dht, 5000);
+		$scope.$on("$destroy", function() {
+			$interval.cancel(interval);
+		});
 	}
 
-    controller.$inject = ['$resource', '$interval'];
+    controller.$inject = ['$resource', '$interval', '$scope'];
 
     angular.module('incubator').controller('dhtController', controller);
 })()

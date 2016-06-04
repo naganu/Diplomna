@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-    function controller($resource, $interval) {
+    function controller($resource, $interval, $scope) {
         var incubator = this;
 
         incubator.buttons = [
@@ -41,14 +41,18 @@
             value: false
         }
 
-        $interval(function() {
+        var interval = $interval(function() {
             $resource(incubator.hall.url).save({}, {}, function (response) {
                 incubator.hall.value = response.state;
             });
         }, 5000);
+
+		$scope.$on("$destroy", function() {
+			$interval.cancel(interval);
+		});
     }
 
-    controller.$inject = ['$resource', '$interval'];
+    controller.$inject = ['$resource', '$interval', '$scope'];
 
     angular.module('incubator').controller('incubatorController', controller);
 })()

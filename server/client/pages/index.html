@@ -22,7 +22,7 @@
 			<div ng-show="host" layout="column" layout-align="center center" layout-wrap layout-margin layout-padding>
                 <div ng-controller="navigationController as navigate">
                     <md-button
-                    	ng-repeat="button in ['home', 'test', 'settings']"
+                    	ng-repeat="button in ['home', 'test', 'settings', 'tuning']"
                     	ng-class="navigate.button === $index ? 'md-raised' : ''"
                     	class="md-primary"
 						translate="{{button}}"
@@ -40,7 +40,8 @@
 		<script src="angular-route/angular-route.js"></script>
 		<script src="angular-translate/dist/angular-translate.js"></script>
 		<script src="index.js"></script>
-        <script src="indexController.js"></script>
+        <script src="index_controller.js"></script>
+		<script src="tuningController.js"></script>
 		<script src="incubator_controller.js"></script>
 		<script src="navigation_controller.js"></script>
 		<script src="dht_controller.js"></script>

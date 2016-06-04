@@ -24,6 +24,10 @@
 	    	templateUrl: 'pages/dht.html',
 	    	controller: 'dhtController',
 	    	controllerAs: 'dht'
+		}).when('/tuning', {
+			templateUrl: 'pages/tuning.html',
+			controller: 'tuningController',
+			controllerAs: 'tuning'
 	    }).otherwise('/home');
 
 		$translateProvider.translations("en", {

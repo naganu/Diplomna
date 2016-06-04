@@ -1,0 +1,20 @@
+<div layout="column" layout-align="center center">
+    <div layout="row" layout-align="center center">
+        <md-input-container ng-repeat="input in ['targetTemp', 'T_period']">
+            <label "{{input}}"></label>
+            <input type="number" ng-model="tuning[input]"></input>
+        </md-input-container>
+    </div>
+    <div layout="row" layout-align="center center">
+        <md-input-container ng-repeat="output in ['measeredTemp', 'correction']">
+            <label "{{output}}"></label>
+            <md-button type="number" class="md-primary" ng-disabled="true">{{tuning[output]}}</input>
+        </md-input-container>
+    </div>
+    <div layout="row" layout-align="center center">
+        <md-input-container ng-repeat="c in ['p', 'd', 'i']">
+            <label "{{c}}"></label>
+            <input type="number" ng-model="tuning[c]"></input>
+        </md-input-container>
+    </div>
+</div>
