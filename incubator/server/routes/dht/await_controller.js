@@ -5,7 +5,7 @@ module.exports = function(sensor, action, delay) {
     this.wait = false;
 
     this.run = function() {
-        pi.pinMode(sensor, wpi.INPUT);
+        wpi.pinMode(sensor, wpi.INPUT);
         wpi.pinMode(action, wpi.OUTPUT);
         wpi.pullUpDnControl(sensor, wpi.PUD_UP);
         wpi.digitalWrite(action, wpi.HIGH);
