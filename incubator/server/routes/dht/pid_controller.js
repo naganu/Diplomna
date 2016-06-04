@@ -2,11 +2,14 @@ var wpi = require('wiring-pi');
 var PIDController = require('node-pid-controller');
 var range = 100;
 
-module.exports = function(p, i, d, pin, sensor) {
-    this.interval = null;
+module.exports = function(pin, sensor) {
+    var ctrl = this;
+    ctrl.interval = null;
+    ctrl.data = 0;
+    ctrl.correction = 0;
 
-    this.run = function(target, period, onTarget) {
-        this.stop();
+    this.run = function(p, i, d, target, period, onTarget) {
+        ctrl.stop();
         if(!wpi.softPwmCreate(pin, 0, range)) {
             var pid = new PIDController({
                 k_p: p,
@@ -16,11 +19,12 @@ module.exports = function(p, i, d, pin, sensor) {
                 i_max: range
             });
             pid.setTarget(target);
-            this.interval = setInterval(function() {
+            function handler() {
                 sensor().then(function(data) {
-                    var correction = pid.update(data);
-                    if(correction > 1) {
-                        wpi.softPwmWrite(pin, correction);
+                    ctrl.data = data;
+                    ctrl.correction = pid.update(data);
+                    if(ctrl.correction > 1) {
+                        wpi.softPwmWrite(pin, ctrl.correction);
                     } else {
                         if(typeof onTarget === 'function') {
                             onTarget();
@@ -28,15 +32,17 @@ module.exports = function(p, i, d, pin, sensor) {
                         wpi.softPwmWrite(pin, 0);
                     }
                 });
-            }, 1000 * period);
+            }
+            handler();
+            ctrl.interval = setInterval(handler, 1000 * period);
         }
     }
 
     this.stop = function() {
-        if(this.interval) {
+        if(ctrl.interval) {
             wpi.softPwmStop(pin);
-            clearInterval(this.interval);
-            this.interval = null;
+            clearInterval(ctrl.interval);
+            ctrl.interval = null;
         }
     }
 }
