@@ -5,6 +5,7 @@ var router = new Router();
 
 router.route('/tuning')
 .get(function(request, response, next) {
+    console.log(temp.data, temp.correction, temp.p, temp.i, temp.d);
     response.send({temp: {
         data: temp.data,
         correction: temp.correction,
@@ -15,9 +16,7 @@ router.route('/tuning')
 })
 .post(function(request, response, next) {
     var setTemp = request.body.temp;
-    if(!intVen.interval) {
-        intVent.run();
-    }
+    intVent.run();
     temp.run(setTemp.p, setTemp.i, setTemp.d, setTemp.target, setTemp.period);
     response.send({set: true});
 });
