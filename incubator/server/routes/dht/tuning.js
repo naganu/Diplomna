@@ -21,6 +21,7 @@ router.route('/tuning')
     var setTemp = request.body.temp;
     intVent.run();
     temp.run(setTemp.p, setTemp.i, setTemp.d, setTemp.target, setTemp.period);
+    log.write(setTemp.target + ' ' + setTemp.period + ' ' + setTemp.p + ' ' + setTemp.i + ' ' + setTemp.d + '\n');
     response.send({set: true});
 });
 
