@@ -1,11 +1,14 @@
 var temp = require('./temp');
 var intVent = require('./int_vent');
 var {Router} = require('express');
+var fs = require('fs');
 var router = new Router();
+
+var log = fs.createWriteStream ("/home/pi/data.log", {flags: "a"});
 
 router.route('/tuning')
 .get(function(request, response, next) {
-    console.log(temp.data, temp.correction, temp.p, temp.i, temp.d);
+    log.write(temp.data + ',' + temp.correction + ',' + temp.p + ',' + temp.i + ',' + temp.d + '\n');
     response.send({temp: {
         data: temp.data,
         correction: temp.correction,
