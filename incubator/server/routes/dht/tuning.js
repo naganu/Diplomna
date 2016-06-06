@@ -21,7 +21,7 @@ var buzzer = 28;
 var extVent = new ventController(80, 2);
 var runTimeout = null;
 var stopTimeout = null;
-var beep = false;
+var beep = true;
 
 router.route('/tuning')
 .get(function(request, response, next) {
@@ -39,7 +39,20 @@ router.route('/tuning')
 })
 .post(function(request, response, next) {
     var setTemp = request.body.temp;
-    if(Object.keys(setTemp).length === 5) {
+    if(!setTem.target) {
+        if(runTimeout) {
+            clearTimeout(runTimeout);
+            runTimeout = null;
+        }
+        if(stopTimeout) {
+            clearTimeout(stopTimeout);
+            stopTimeout = null;
+        }
+        intVent.stop();
+        temp.stop();
+        rotation.stop();
+        extVent.stop();
+    } else if(Object.keys(setTemp).length === 5) {
         set = Object.assign({}, setTemp);
         set.rotation = request.body.rotation;
         intVent.run();
@@ -62,25 +75,12 @@ router.route('/tuning')
                 }, 60000);
             }, 60000);
         });
-    } else {
-        if(runTimeout) {
-            clearTimeout(runTimeout);
-            runTimeout = null;
-        }
-        if(stopTimeout) {
-            clearTimeout(stopTimeout);
-            stopTimeout = null;
-        }
-        intVent.stop();
-        temp.stop();
-        rotation.stop();
-        extVent.stop();
     }
     response.send({set: true});
 });
 
 router.get('/tuning/data', function(request, response, next) {
-    measurement.find({}).sort({time: 'desc'}).limit(100).exec().then(function(docs) {
+    measurement.find({}).sort({time: 'desc'}).limit(30).exec().then(function(docs) {
         response.send({data: docs});
     }, next);
 });

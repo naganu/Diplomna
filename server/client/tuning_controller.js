@@ -4,9 +4,14 @@
     function controller($resource, $interval, $scope) {
         var tuning = this;
         tuning.chart = {
-            series: ['measeredTemp', 'correction', 'r_p', 'r_d', 'r_i', 'p', 'i', 'd'. 'targetTemp', 'period', 'rotation'],
-            data: []
+            series: ['measeredTemp', 'correction', 'r_p', 'r_d', 'r_i', 'p', 'i', 'd', 'targetTemp', 'period', 'rotation'],
+            data: [],
+            labels: []
         };
+        var labels = 1;
+        for(var i = 0; i < 11; ++i) {
+            tuning.chart.data[i] = [];
+        }
 
         tuning.update = function() {
             $resource('/incubator/tuning').save({}, {
@@ -21,6 +26,19 @@
             }, function (response) {
             })
         };
+
+        function last_data() {
+            var length = tuning.chart.labels.length - 30;
+            if(labels > 30) {
+                labels = 30;
+                tuning.chart.labels = tuning.chart.labels.splice(0, length);
+                for(var i = 0; i < 11; ++i) {
+                    tuning.chart.data[i] = tuning.chart.data[i].splice(0, length);
+                }
+            } else {
+                tuning.chart.labels.push(labels++);
+            }
+        }
 
         function get() {
             $resource('/incubator/tuning').get({}, {}, function(response) {
@@ -43,6 +61,7 @@
                             for(var i = 0; i < 11; ++i) {
                                 tuning.chart.data[i].push(tuning[tuning.chart.series[i]]);
                             }
+                            last_data();
                         } else {
                             get_data();
                         }
@@ -55,22 +74,23 @@
             $resource('/incubator/tuning/data').get({}, {}, function(response) {
                 if(response.data && response.data.length) {
                     var chart = tuning.chart;
-                    for(var i = 0; i < 11; ++i) {
-                        chart.data[i] = [];
-                    }
-                    for(var i = 0; i < response.data.length; ++i) {
+                    for(var i = response.data.length - 1; i > -1; --i) {
                         var data = response.data[i];
-                        chart.data[0].push(data.temp.data);
-                        chart.data[1].push(data.temp.correction);
-                        chart.data[2].push(data.temp.p);
-                        chart.data[3].push(data.temp.i);
-                        chart.data[4].push(data.temp.d);
-                        chart.data[5].push(data.temp.set.p);
-                        chart.data[6].push(data.temp.set.i);
-                        chart.data[7].push(data.temp.set.d);
-                        chart.data[8].push(data.temp.set.target);
-                        chart.data[9].push(data.temp.set.period);
-                        chart.data[10].push(data.temp.set.rotation);
+                        if(data.temp.set) {
+                            console.log(data);
+                            chart.data[0].push(data.temp.data);
+                            chart.data[1].push(data.temp.correction);
+                            chart.data[2].push(data.temp.p);
+                            chart.data[3].push(data.temp.i);
+                            chart.data[4].push(data.temp.d);
+                            chart.data[5].push(data.temp.set.p);
+                            chart.data[6].push(data.temp.set.i);
+                            chart.data[7].push(data.temp.set.d);
+                            chart.data[8].push(data.temp.set.target);
+                            chart.data[9].push(data.temp.set.period);
+                            chart.data[10].push(data.temp.set.rotation);
+                            last_data();
+                        }
                     }
                 }
             });
