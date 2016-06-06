@@ -45,7 +45,7 @@
             $resource('/incubator/tuning').get({}, {}, function(response) {
                 var temp = response.temp;
                 var humi = response.humi;
-                var set = response.set;
+                var setted = response.setted;
                 if(temp) {
                     tuning.mesuredTemp = temp.data;
                     tuning.correction = temp.correction;
@@ -59,14 +59,14 @@
                 if(temp && humi) {
                     last_data([tuning.mesuredTemp, tuning.mesuredHumi]);
                 }
-                if(set) {
-                    tuning.p = set.temp.p;
-                    tuning.d = set.temp.d;
-                    tuning.i = set.temp.i;
-                    tuning.targetTemp = set.temp.target;
-                    tuning.period = set.temp.period;
-                    tuning.targetHumi = set.humi.target;
-                    tuning.rotation = set.rotation;
+                if(setted) {
+                    tuning.p = setted.temp.p;
+                    tuning.d = setted.temp.d;
+                    tuning.i = setted.temp.i;
+                    tuning.targetTemp = setted.temp.target;
+                    tuning.period = setted.temp.period;
+                    tuning.targetHumi = setted.humi.target;
+                    tuning.rotation = setted.rotation;
                 }
             });
         }

@@ -24,7 +24,7 @@ var humi = new humiController(22,  function() {
 var intVent = new ventController(50, 1);
 var rotation = new awaitController(23, 21, 3);
 var router = new Router();
-var set = null;
+var setted= null;
 var buzzer = 28;
 var extVent = new ventController(80, 2);
 var runTimeout = null;
@@ -44,7 +44,7 @@ router.route('/tuning')
         humi: {
             data: humi.data
         },
-        set: set
+        setted: setted
     };
     measurement.create(tempData).then(function(doc) {
         response.send(tempData);
@@ -67,7 +67,7 @@ router.route('/tuning')
         rotation.stop();
         extVent.stop();
     } else if(Object.keys(setTemp).length === 5) {
-        set = Object.assign({}, request.body);
+        setted= Object.assign({}, request.body);
         intVent.run();
         rotation.run(set.rotation);
         humi.run(set.humi.target, 180, 15, 35);

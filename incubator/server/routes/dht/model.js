@@ -11,7 +11,7 @@ module.exports = mongoose.model('Measurement', {
     humi: {
         data: Number
     },
-    set: {
+    setted: {
         rotation: Number,
         temp: {
             p: Number,
