@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var wpi = require('wiring-pi');
+var state = {};
 
 var outputs = [
 	{
@@ -40,19 +41,30 @@ var inputs = [
 	}
 ];
 
-function output(pin) {
+function output(url, pin) {
 	wpi.pinMode(pin, wpi.OUTPUT);
 	return function (request, response) {
-		if(request.body.state)
+		state[url] = request.body.state;
+		if(state[url]) {
 			wpi.digitalWrite(pin, wpi.HIGH);
-		else
+		} else {
 			wpi.digitalWrite(pin, wpi.LOW);
+		}
 		response.send(request.body);
-	}
+	};
 }
 
-for(var i = 0;i < outputs.length; ++i)
-	router.post(outputs[i].url, output(outputs[i].pin));
+function get_state(url) {
+	return function(request, response) {
+		response.send({state: state[url]});
+	};
+}
+
+for(var i = 0;i < outputs.length; ++i) {
+	var url = outputs[i].url;
+	router.post(url, output(url, outputs[i].pin));
+	router.get(url, get_state(url));
+}
 
 function input(pin) {
 	wpi.pinMode(pin, wpi.INPUT);

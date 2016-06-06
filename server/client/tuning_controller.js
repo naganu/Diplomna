@@ -3,16 +3,6 @@
 
     function controller($resource, $interval, $scope) {
         var tuning = this;
-        tuning.targetTemp = 0;
-        tuning.measeredTemp = 0;
-        tuning.correction = 0;
-        tuning.period = 0;
-        tuning.p = 0;
-        tuning.d = 0;
-        tuning.i = 0;
-        tuning.r_p = 0;
-        tuning.r_i = 0;
-        tuning.r_d = 0;
 
         tuning.update = function() {
             $resource('/incubator/tuning').save({}, {
@@ -41,7 +31,7 @@
                         tuning.p = set.p;
                         tuning.d = set.d;
                         tuning.i = set.i;
-                        tuning.target = set.target;
+                        tuning.targetTemp = set.target;
                         tuning.period = set.period;
                     }
                 }
