@@ -2,7 +2,7 @@
     <div layout="row" layout-align="center center">
         <md-input-container ng-repeat="input in ['targetTemp', 'period']">
             <label>{{input}}</label>
-            <input type="number" ng-model="tuning[input]" step="0.01" ng-change="tuning.update()"></input>
+            <input type="number" ng-model="tuning[input]" step="0.01" min="0"></input>
         </md-input-container>
     </div>
     <div layout="row" layout-align="center strech" layout-wrap>
@@ -20,7 +20,8 @@
     <div layout="row" layout-align="center center">
         <md-input-container ng-repeat="c in ['p', 'd', 'i']">
             <label>{{c}}</label>
-            <input type="number" ng-model="tuning[c]" step="0.01" ng-change="tuning.update()"></input>
+            <input type="number" ng-model="tuning[c]" step="0.01" min="0"></input>
         </md-input-container>
     </div>
+    <md-button ng-click="tuning.update()" class="md-primary md-raised" translate="set"></md-button>
 </div>

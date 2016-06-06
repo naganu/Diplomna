@@ -21,10 +21,15 @@ router.route('/tuning')
 })
 .post(function(request, response, next) {
     var setTemp = request.body.temp;
-    set = Object.assign({}, setTemp);
-    intVent.run();
-    temp.run(setTemp.p, setTemp.i, setTemp.d, setTemp.target, setTemp.period);
-    log.write(setTemp.target + ' ' + setTemp.period + ' ' + setTemp.p + ' ' + setTemp.i + ' ' + setTemp.d + '\n');
+    if(setTemp.target) {
+        set = Object.assign({}, setTemp);
+        intVent.run();
+        temp.run(setTemp.p, setTemp.i, setTemp.d, setTemp.target, setTemp.period);
+        log.write(setTemp.target + ' ' + setTemp.period + ' ' + setTemp.p + ' ' + setTemp.i + ' ' + setTemp.d + '\n');
+    } else {
+        intVent.stop();
+        temp.stop();
+    }
     response.send({set: true});
 });
 

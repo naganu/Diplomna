@@ -38,8 +38,8 @@
 			"connect": "CONNECT",
 			"home": "HOME",
 			"test": "TEST",
-			"settings": "SETTINGS",
-			"program": "Program",
+			"settings": "PROGRAM",
+			"program": "Program name",
 			"start": "START",
 			"current temperature": "Current temperature",
 			"current humidity": "Current humidity",
@@ -69,7 +69,9 @@
 			"temperature": "temperature",
 			"humidity": "humidity",
 			"period": "period",
-			"interval": "interval - rotation"
+			"interval": "interval - rotation",
+			"set": "SET",
+			"tuning": "TUNING"
 		});
 
     	$translateProvider.translations("bg", {
@@ -80,8 +82,8 @@
 			"connect": "СВЪРЗВАНЕ",
 			"home": "НАЧАЛО",
 			"test": "ИЗПРОБВАЙ",
-			"settings": "НАСТРОЙКИ",
-			"program": "Програма",
+			"settings": "ПРОГРАМА",
+			"program": "Име на програмата",
 			"start": "СТАРТ",
 			"current temperature": "Температура",
 			"current humidity": "Влажност",
@@ -111,7 +113,10 @@
 			"temperature": "температура",
 			"humidity": "влажност",
 			"period": "продължителност",
-			"interval": "интервал на обръщане"
+			"interval": "интервал на обръщане",
+			"set": "ЗАДАЙ",
+			"tuning": "РЕГУЛИРАНЕ"
+
 		});
 
 		$translateProvider.use("en");
