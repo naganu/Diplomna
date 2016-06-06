@@ -8,7 +8,7 @@ module.exports = function(pin, sensor) {
 
     this.run = function(target, period, durutaion, value) {
         this.stop();
-        ctrl.interval = setInterval(function() {
+        function handler() {
             sensor().then(function(data) {
                 ctrl.data = data;
                 if((target - data > 5) && !wpi.softPwmCreate(pin, value, 100)) {
@@ -17,7 +17,9 @@ module.exports = function(pin, sensor) {
                     }, durutaion * 1000);
                 }
             });
-        }, period * 1000);
+        }
+        handler();
+        ctrl.interval = setInterval(handler, 1000 * period);
     };
 
     this.stop = function() {

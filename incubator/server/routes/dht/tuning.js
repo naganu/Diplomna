@@ -74,7 +74,7 @@ router.route('/tuning')
         setted = Object.assign({}, request.body);
         intVent.run();
         rotation.run(setted.rotation);
-        humi.run(setted.humi.target, setTemp.period, 15, 35);
+        humi.run(setted.humi.target, 20, 5, 35);
         temp.run(setTemp.p, setTemp.i, setTemp.d, setTemp.target, setTemp.period, function() {
             if(beep && !wpi.softPwmCreate(buzzer, 50, 100)) {
                 beep = false;
