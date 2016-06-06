@@ -12,15 +12,21 @@
         </md-input-container>
     </div>
     <div layout="row" layout-align="center center">
+        <md-input-container ng-repeat="c in ['p', 'd', 'i']">
+            <label>{{c}}</label>
+            <input type="number" ng-model="tuning[c]" step="0.01" min="0"></input>
+        </md-input-container>
+    </div>
+    <div layout="row" layout-align="center center">
         <md-input-container ng-repeat="c in ['r_p', 'r_d', 'r_i']">
             <label>{{c}}</label>
             <input type="number" ng-model="tuning[c]" ng-disabled="true"></input>
         </md-input-container>
     </div>
     <div layout="row" layout-align="center center">
-        <md-input-container ng-repeat="c in ['p', 'd', 'i']">
-            <label>{{c}}</label>
-            <input type="number" ng-model="tuning[c]" step="0.01" min="0"></input>
+        <md-input-container>
+            <label>rotation</label>
+            <input type="number" ng-model="tuning.rotation" step="1" min="0"></input>
         </md-input-container>
     </div>
     <div layout="row" layout-align="center center">

@@ -1,16 +1,16 @@
 var wpi = require('wiring-pi');
 
-module.exports = function(sensor, action, delay) {
+module.exports = function(sensor, action) {
     this.timeout = null;
     this.wait = false;
 
-    this.run = function() {
+    this.run = function(mins) {
         wpi.pinMode(sensor, wpi.INPUT);
         wpi.pinMode(action, wpi.OUTPUT);
         wpi.pullUpDnControl(sensor, wpi.PUD_UP);
         wpi.digitalWrite(action, wpi.HIGH);
         if(delay > 0) {
-            this.timeout = setTimeout(this.awaiting, delay);
+            this.timeout = setTimeout(this.awaiting, mins * 60000);
         } else {
             this.awaiting();
         }

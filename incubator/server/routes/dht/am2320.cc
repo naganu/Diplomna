@@ -4,7 +4,6 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <unistd.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>              /* for O_RDWR */
 #include <string.h>             /* for memcpy */

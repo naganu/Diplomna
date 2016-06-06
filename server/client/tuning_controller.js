@@ -12,7 +12,8 @@
                     i: tuning.i,
                     target: tuning.targetTemp,
                     period: tuning.period
-                }
+                },
+                rotation: tuning.rotation
             }, function (response) {
             })
         };
@@ -33,6 +34,7 @@
                         tuning.i = set.i;
                         tuning.targetTemp = set.target;
                         tuning.period = set.period;
+                        tuning.rotation = set.rotation;
                     }
                 }
             });

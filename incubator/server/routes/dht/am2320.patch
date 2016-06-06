@@ -10,7 +10,6 @@ index 77eeade..2e79cb2 100644
  #include <stdlib.h>
 -#include <stdio.h>
 +#include <unistd.h>
-+#include <unistd.h>
 +#include <sys/ioctl.h>
  #include <fcntl.h>              /* for O_RDWR */
  #include <string.h>             /* for memcpy */
