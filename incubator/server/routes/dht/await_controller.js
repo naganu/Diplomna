@@ -7,6 +7,7 @@ module.exports = function(sensor, action, delay) {
     ctrl.wait = false;
 
     ctrl.run = function(mins) {
+        ctrl.stop();
         wpi.pinMode(sensor, wpi.INPUT);
         wpi.pinMode(action, wpi.OUTPUT);
         wpi.pullUpDnControl(sensor, wpi.PUD_UP);
@@ -28,7 +29,6 @@ module.exports = function(sensor, action, delay) {
 
     ctrl.stop = function() {
         if(ctrl.interval) {
-            wpi.softPwmStop(pin);
             clearInterval(ctrl.interval);
             ctrl.interval = null;
         }

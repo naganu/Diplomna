@@ -5,6 +5,7 @@
         var tuning = this;
 
         tuning.update = function() {
+            console.log(tuning.rotation);
             $resource('/incubator/tuning').save({}, {
                 temp: {
                     p: tuning.p,
