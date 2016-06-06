@@ -52,10 +52,9 @@ router.route('/tuning')
                     beeps++;
                 }
             } else if(!wpi.softPwmCreate(buzzer, 50, 100)) {
-                    setTimeout(function() {
-                        wpi.softPwmStop(buzzer);
-                    }, 1000);
-                }
+                setTimeout(function() {
+                    wpi.softPwmStop(buzzer);
+                }, 1000);
             }
             runTimeout = setTimeout(function() {
                 extVent.run();
