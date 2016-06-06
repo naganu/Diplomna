@@ -24,20 +24,27 @@
                     period: tuning.period
                 }
             }, function (response) {
-
             })
         };
 
         function get() {
             $resource('/incubator/tuning').get({}, {}, function(response) {
-                if(response.temp) {
-                    tuning.measeredTemp = response.temp.data;
-                    tuning.correction = response.temp.correction;
-                    tuning.r_p = response.temp.p;
-                    tuning.r_i = response.temp.i;
-                    tuning.r_d = response.temp.d;
+                var temp = response.temp;
+                if(temp) {
+                    tuning.measeredTemp = temp.data;
+                    tuning.correction = temp.correction;
+                    tuning.r_p = temp.p;
+                    tuning.r_i = temp.i;
+                    tuning.r_d = temp.d;
+                    var set = temp.set;
+                    if(set !== null) {
+                        tuning.p = set.p;
+                        tuning.d = set.d;
+                        tuning.i = set.i;
+                        tuning.target = set.target;
+                        tuning.period = set.period;
+                    }
                 }
-                console.log(response);
             });
         }
 

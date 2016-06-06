@@ -60,8 +60,8 @@ class Controller {
     this.p = this.k_p * error;
     this.i = this.k_i * this.sumError;
     this.d = this.k_d * dError;
-    if(Math.abs(this.i) > 100) {
-        this.i = 100 * (this.i > 0) ? 1 : -1;
+    if(Math.abs(this.i) > this.i_max) {
+        this.i = this.i_max * (this.i > 0) ? 1 : -1;
     }
     return this.p + this.i + this.d;
   }
