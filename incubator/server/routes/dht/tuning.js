@@ -12,7 +12,7 @@ var temp = new PIDController(3, function() {
     })
 });
 var intVent = new ventController(50, 0, 1);
-var rotation = new awaitController(23, 21);
+var rotation = new awaitController(23, 21, 3);
 var router = new Router();
 var set = null;
 

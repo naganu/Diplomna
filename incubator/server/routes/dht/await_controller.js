@@ -1,38 +1,51 @@
 var wpi = require('wiring-pi');
 
-module.exports = function(sensor, action) {
-    this.timeout = null;
-    this.wait = false;
+module.exports = function(sensor, action, delay) {
+    var ctrl = this;
+    ctrl.timeout = null;
+    ctrl.interval = null;
+    ctrl.wait = false;
 
-    this.run = function(mins) {
+    ctrl.run = function(mins) {
         wpi.pinMode(sensor, wpi.INPUT);
         wpi.pinMode(action, wpi.OUTPUT);
         wpi.pullUpDnControl(sensor, wpi.PUD_UP);
         wpi.digitalWrite(action, wpi.HIGH);
         if(delay > 0) {
-            this.timeout = setTimeout(this.awaiting, mins * 60000);
+            ctrl.interval = setInterval(function() {
+                ctrl.timeout = setTimeout(ctrl.awaiting, delay * 1000);
+            },  mins * 60000);
         } else {
-            this.awaiting();
+            ctrl.interval = setInterval(ctrl.awaiting, mins * 60000);
         }
     };
 
-    this.awaiting = function() {
-        this.wait = true;
+    ctrl.awaiting = function() {
+        ctrl.wait = true;
+        if(ctrl.timeout) {
+            clearTimeout(ctrl.timeout);
+            ctrl.timeout = null;
+        }
         wpi.wiringPiISR(sensor, wpi.INT_EDGE_BOTH, function(delta) {
             wpi.digitalWrite(action, wpi.LOW);
-            this.wait = false;
+            ctrl.wait = false;
             wpi.wiringPiISRCancel(sensor);
         });
     };
 
-    this.stop = function() {
-        if(this.timeout) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
+    ctrl.stop = function() {
+        if(ctrl.interval) {
+            wpi.softPwmStop(pin);
+            clearInterval(ctrl.interval);
+            ctrl.interval = null;
         }
-        if(this.wait) {
+        if(ctrl.timeout) {
+            clearTimeout(ctrl.timeout);
+            ctrl.timeout = null;
+        }
+        if(ctrl.wait) {
             wpi.wiringPiISRCancel(sensor);
-            this.wait = false;
+            ctrl.wait = false;
         }
     };
 };
