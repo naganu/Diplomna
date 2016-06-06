@@ -8,13 +8,13 @@ module.exports = function(sensor, action, delay) {
 
     ctrl.run = function(mins) {
         ctrl.stop();
-        wpi.pinMode(sensor, wpi.INPUT);
-        wpi.pinMode(action, wpi.OUTPUT);
-        wpi.pullUpDnControl(sensor, wpi.PUD_UP);
-        wpi.digitalWrite(action, wpi.HIGH);
         ctrl.interval = setInterval(function() {
+            wpi.pinMode(sensor, wpi.INPUT);
+            wpi.pinMode(action, wpi.OUTPUT);
+            wpi.pullUpDnControl(sensor, wpi.PUD_UP);
+            wpi.digitalWrite(action, wpi.HIGH);
             ctrl.timeout = setTimeout(ctrl.awaiting, delay * 1000);
-        },  mins * 60000);
+        }, mins * 60000);
     };
 
     ctrl.awaiting = function() {
