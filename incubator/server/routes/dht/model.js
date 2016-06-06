@@ -6,16 +6,24 @@ module.exports = mongoose.model('Measurement', {
         correction: Number,
         p: Number,
         i: Number,
-        d: Number,
-        set: {
-            rotation: Number,
+        d: Number
+    },
+    humi: {
+        data: Number
+    },
+    set: {
+        rotation: Number,
+        temp: {
             p: Number,
             i: Number,
             d: Number,
             target: Number,
             period: Number
+        },
+        humi: {
+            target: Number
         }
-    },
+    }
     time: {
         type: Date,
         default: Date.now

@@ -6,7 +6,7 @@
         </md-input-container>
     </div>
     <div layout="row" layout-align="center strech" layout-wrap>
-        <md-input-container ng-repeat="output in ['measeredTemp', 'correction']">
+        <md-input-container ng-repeat="output in ['mesuredTemp', 'correction']">
             <label>{{output}}</label>
             <input type="number" ng-model="tuning[output]" ng-disabled="true"></input>
         </md-input-container>
@@ -27,6 +27,14 @@
         <md-input-container>
             <label>rotation</label>
             <input type="number" ng-model="tuning.rotation" step="1" min="0"></input>
+        </md-input-container>
+        <md-input-container>
+            <label>targetHumi</label>
+            <input type="number" ng-model="tuning.targetHumi" step="0.01" min="0"></input>
+        </md-input-container>
+        <md-input-container>
+            <label>mesuredHumi</label>
+            <input type="number" ng-model="tuning.mesuredHumi" ng-disabled="true"></input>
         </md-input-container>
     </div>
     <div layout="row" layout-align="center center">

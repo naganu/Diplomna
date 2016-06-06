@@ -32,10 +32,10 @@ module.exports = function(pin, sensor) {
                     if(ctrl.correction > 1) {
                         wpi.softPwmWrite(pin, ctrl.correction);
                     } else {
-                        if(typeof onTarget === 'function') {
-                            onTarget();
-                        }
                         wpi.softPwmWrite(pin, 0);
+                    }
+                    if((typeof onTarget === 'function') && (data - target >= 0)) {
+                        onTarget();
                     }
                 });
             }
