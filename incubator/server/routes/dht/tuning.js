@@ -38,7 +38,7 @@ router.route('/tuning')
 })
 .post(function(request, response, next) {
     var setTemp = request.body.temp;
-    if(setTemp.target) {
+    if(Object.keys(setTemp).length === 5) {
         set = Object.assign({}, setTemp);
         set.rotation = request.body.rotation;
         log.write(setTemp.target + ' ' + setTemp.period + ' ' + setTemp.p + ' ' + setTemp.i + ' ' + setTemp.d + ' ' + set.rotation + '\n');
@@ -46,16 +46,16 @@ router.route('/tuning')
         rotation.run(set.rotation);
         temp.run(setTemp.p, setTemp.i, setTemp.d, setTemp.target, setTemp.period, function() {
             if(beeps) {
-                beeps++;
-                if(beeps === 5) {
+                if(beeps === 10) {
                     beeps = 0;
+                } else {
+                    beeps++;
                 }
-            } else {
-                wpi.pinMode(buzzer, wpi.OUTPUT);
-                wpi.digitalWrite(buzzer, wpi.HIGH);
-                setTimeout(function() {
-                    wpi.digitalWrite(buzzer, wpi.LOW);
-                }, 1000);
+            } else if(!wpi.softPwmCreate(buzzer, 50, 100)) {
+                    setTimeout(function() {
+                        wpi.softPwmStop(buzzer);
+                    }, 1000);
+                }
             }
             runTimeout = setTimeout(function() {
                 extVent.run();

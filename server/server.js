@@ -38,7 +38,7 @@ function getIp (request, response, next) {
 function connection(request, response, next) {
     connected.findOne(request.params).exec().then(function (inc) {
         if(inc) {
-            incubators.create({user: request.reqIp, host: inc.host}).then(function (doc) {
+            incubators.update({user: request.reqIp}, {host: inc.host}, {upsert: true}).then(function (doc) {
                 response.send({success: true});
             }, next);
         } else {
@@ -48,10 +48,9 @@ function connection(request, response, next) {
 }
 
 function connect(request, response, next) {
-    var incubator = {incubator: request.body.incubator};
-    incubator.host = request.reqIp.replace("\:\:ffff\:", "") + ":" + request.body.port;
+    var host = request.reqIp.replace("\:\:ffff\:", "") + ":" + request.body.port;
     console.log(incubator)
-    connected.create(incubator).then(function (doc) {
+    connected.update({incubator: request.body.incubator}, {host: host}, {upsert: true}).then(function (doc) {
         response.send({success: true});
     }, next);
 }
