@@ -125,7 +125,7 @@
 
 	config.$inject = ['$mdThemingProvider', '$routeProvider', '$translateProvider'];
 
-    angular.module(module, ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource', 'ngRoute', 'pascalprecht.translate']).config(config);
+    angular.module(module, ['ngMaterial', 'ngMessages', 'ngAria', 'ngAnimate', 'ngResource', 'ngRoute', 'pascalprecht.translate', 'chart.js']).config(config);
 
 	angular.element(document).ready(function() {
 		angular.bootstrap(document, [module]);

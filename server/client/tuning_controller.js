@@ -3,6 +3,10 @@
 
     function controller($resource, $interval, $scope) {
         var tuning = this;
+        tuning.chart = {
+            series: ['measeredTemp', 'correction', 'r_p', 'r_d', 'r_i', 'p', 'i', 'd'. 'targetTemp', 'period', 'rotation'],
+            data: []
+        };
 
         tuning.update = function() {
             $resource('/incubator/tuning').save({}, {
@@ -35,16 +39,50 @@
                         tuning.targetTemp = set.target;
                         tuning.period = set.period;
                         tuning.rotation = set.rotation;
+                        if(tuning.chart.data[0] && tuning.chart.data[0].length) {
+                            for(var i = 0; i < 11; ++i) {
+                                tuning.chart.data[i].push(tuning[tuning.chart.series[i]]);
+                            }
+                        } else {
+                            get_data();
+                        }
+                    }
+                }
+            });
+        }
+
+        function get_data() {
+            $resource('/incubator/tuning/data').get({}, {}, function(response) {
+                if(response.data && response.data.length) {
+                    var chart = tuning.chart;
+                    for(var i = 0; i < 11; ++i) {
+                        chart.data[i] = [];
+                    }
+                    for(var i = 0; i < response.data.length; ++i) {
+                        var data = response.data[i];
+                        chart.data[0].push(data.temp.data);
+                        chart.data[1].push(data.temp.correction);
+                        chart.data[2].push(data.temp.p);
+                        chart.data[3].push(data.temp.i);
+                        chart.data[4].push(data.temp.d);
+                        chart.data[5].push(data.temp.set.p);
+                        chart.data[6].push(data.temp.set.i);
+                        chart.data[7].push(data.temp.set.d);
+                        chart.data[8].push(data.temp.set.target);
+                        chart.data[9].push(data.temp.set.period);
+                        chart.data[10].push(data.temp.set.rotation);
                     }
                 }
             });
         }
 
         get();
+        get_data();
         var interval = $interval(get, 10000);
         $scope.$on('$destroy', function() {
             $interval.cancel(interval);
         });
+
     }
 
     controller.$inject = ['$resource', '$interval', '$scope'];

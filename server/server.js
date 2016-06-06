@@ -49,7 +49,6 @@ function connection(request, response, next) {
 
 function connect(request, response, next) {
     var host = request.reqIp.replace("\:\:ffff\:", "") + ":" + request.body.port;
-    console.log(host);
     connected.update({incubator: request.body.incubator}, {host: host}, {upsert: true}).exec().then(function (doc) {
         console.log(doc);
         response.send({success: true});
