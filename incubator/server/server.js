@@ -31,8 +31,8 @@ electron.app.on('ready', function() {
     }, function (error, res, body) {
         if(!error) {
             mainWindow = new electron.BrowserWindow({
-                frame: false,
-                fullscreen: true
+                frame: true,
+                fullscreen: false
             })
             mainWindow.loadURL(baseURL)
             mainWindow.on('closed', function() {

@@ -23,7 +23,7 @@ module.exports = mongoose.model('Measurement', {
         humi: {
             target: Number
         }
-    }
+    },
     time: {
         type: Date,
         default: Date.now
