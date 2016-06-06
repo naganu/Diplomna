@@ -33,10 +33,12 @@
             if(labels > 20) {
                 for(var i = 0; i < data.length; ++i) {
                     tuning.chart.data[i].shift();
-                    tuning.chart.data[i].push(data[i]);
                 }
             } else {
                 tuning.chart.labels.push(labels++);
+            }
+            for(var i = 0; i < data.length; ++i) {
+                tuning.chart.data[i].push(data[i]);
             }
         }
 
@@ -45,7 +47,6 @@
                 var temp = response.temp;
                 var humi = response.humi;
                 var setted = response.setted;
-                console.log(temp, humi, setted);
                 if(temp) {
                     tuning.mesuredTemp = temp.data;
                     tuning.correction = temp.correction;

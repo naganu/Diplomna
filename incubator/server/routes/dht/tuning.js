@@ -47,7 +47,6 @@ router.route('/tuning')
             },
             setted: setted
         };
-        console.log(tempData);
         measurement.create(tempData).then(function(doc) {
             response.send(tempData);
         }, next);
@@ -75,8 +74,7 @@ router.route('/tuning')
         setted = Object.assign({}, request.body);
         intVent.run();
         rotation.run(setted.rotation);
-        console.log(setted);
-        humi.run(setted.humi.target, 180, 15, 35);
+        humi.run(setted.humi.target, setTemp.period, 15, 35);
         temp.run(setTemp.p, setTemp.i, setTemp.d, setTemp.target, setTemp.period, function() {
             if(beep && !wpi.softPwmCreate(buzzer, 50, 100)) {
                 beep = false;

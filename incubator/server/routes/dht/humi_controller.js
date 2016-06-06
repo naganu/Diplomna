@@ -11,7 +11,7 @@ module.exports = function(pin, sensor) {
         ctrl.interval = setInterval(function() {
             sensor().then(function(data) {
                 ctrl.data = data;
-                if((data - target > 5) && !wpi.softPwmCreate(pin, value, 100)) {
+                if((target - data > 5) && !wpi.softPwmCreate(pin, value, 100)) {
                     ctrl.timeout = setTimeout(function() {
                         wpi.softPwmStop(pin);
                     }, durutaion * 1000);
