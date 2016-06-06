@@ -33,22 +33,27 @@ var beep = true;
 
 router.route('/tuning')
 .get(function(request, response, next) {
-    var tempData = {
-        temp: {
-            data: temp.data,
-            correction: temp.correction,
-            p: temp.p,
-            i: temp.i,
-            d: temp.d
-        },
-        humi: {
-            data: humi.data
-        },
-        setted: setted
-    };
-    measurement.create(tempData).then(function(doc) {
-        response.send(tempData);
-    }, next);
+    if(setted) {
+        var tempData = {
+            temp: {
+                data: temp.data,
+                correction: temp.correction,
+                p: temp.p,
+                i: temp.i,
+                d: temp.d
+            },
+            humi: {
+                data: humi.data
+            },
+            setted: setted
+        };
+        console.log(tempData);
+        measurement.create(tempData).then(function(doc) {
+            response.send(tempData);
+        }, next);
+    } else {
+        response.send({});
+    }
 })
 .post(function(request, response, next) {
     var setTemp = request.body.temp;
@@ -67,7 +72,7 @@ router.route('/tuning')
         rotation.stop();
         extVent.stop();
     } else if(Object.keys(setTemp).length === 5) {
-        setted= Object.assign({}, request.body);
+        setted = Object.assign({}, request.body);
         intVent.run();
         rotation.run(set.rotation);
         humi.run(set.humi.target, 180, 15, 35);

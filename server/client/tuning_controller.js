@@ -4,7 +4,7 @@
     function controller($resource, $interval, $scope) {
         var tuning = this;
         tuning.chart = {
-            series: ['mesuredTemp', 'correction', 'r_p', 'r_d', 'r_i', 'p', 'i', 'd', 'targetTemp', 'period', 'rotation'],
+            series: ['mesuredTemp', 'mesuredHumi', 'correction', 'r_p', 'r_d', 'r_i', 'p', 'i', 'd', 'targetTemp', 'period', 'rotation'],
             data: [],
             labels: []
         };
@@ -26,8 +26,7 @@
                     target: tuning.targetHumi
                 },
                 rotation: tuning.rotation
-            }, function (response) {
-            })
+            }, function (response) {});
         };
 
         function last_data(data) {
@@ -46,6 +45,7 @@
                 var temp = response.temp;
                 var humi = response.humi;
                 var setted = response.setted;
+                console.log(temp, humi, setted);
                 if(temp) {
                     tuning.mesuredTemp = temp.data;
                     tuning.correction = temp.correction;
@@ -54,7 +54,7 @@
                     tuning.r_d = temp.d;
                 }
                 if(humi) {
-                    tuning,mesuredHumi = humi.data;
+                    tuning.mesuredHumi = humi.data;
                 }
                 if(temp && humi) {
                     last_data([tuning.mesuredTemp, tuning.mesuredHumi]);
@@ -77,7 +77,7 @@
                     var chart = tuning.chart;
                     for(var i = response.data.length - 1; i > -1; --i) {
                         var data = response.data[i];
-                        last_data([data.temp.data, date.humi.data]);
+                        last_data([data.temp.data, data.humi.data]);
                     }
                 }
             });
