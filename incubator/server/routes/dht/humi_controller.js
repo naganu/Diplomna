@@ -19,6 +19,9 @@ module.exports = function(pin, sensor) {
             });
         }
         handler();
+        if(period < 2 + durutaion) {
+            period += durutaion + 3;
+        }
         ctrl.interval = setInterval(handler, 1000 * period);
     };
 
